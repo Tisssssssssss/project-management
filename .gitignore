@@ -1,0 +1,25 @@
+# Runtime business data and recoverable backups
+/data/
+/backups/
+/uploads/
+/attachments/
+*.sqlite*
+*.db
+*.log
+# Credentials and machine configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+.DS_Store
+__pycache__/
+node_modules/
+# Experimental previews stay local
+/dist/*preview*
+/dist/qingyuan-*
+/dist/yantai-*
+/dist/ink-login-preview*
+/dist/account-opening-preview*
+/dist/brand-qingyuan/
+/程序位置与启动说明.md

@@ -1,0 +1,1 @@
+export function cn(...args:any[]){return args.flatMap(x=>typeof x==="string"?[x]:x&&typeof x==="object"?Object.keys(x).filter(k=>x[k]):[]).join(" ")}

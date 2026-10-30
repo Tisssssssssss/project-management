@@ -1,0 +1,5 @@
+/* Shared presentation state. Never mutates project records. */
+(function(){const previous=render;let density='comfortable';try{density=localStorage.getItem('yuncheng-density')||density}catch{}
+render=function(){previous();document.body.classList.toggle('compact-rows',density==='compact');const toolbar=document.querySelector('.list-toolbar');if(toolbar&&!selected){const controls=document.createElement('div');controls.className='refine-density';controls.setAttribute('aria-label','列表密度');controls.innerHTML=[['comfortable','舒适'],['compact','紧凑']].map(([k,n])=>`<button type="button" data-density="${k}" aria-pressed="${density===k}" class="${density===k?'active':''}">${n}</button>`).join('');toolbar.append(controls);controls.querySelectorAll('button').forEach(b=>b.onclick=()=>{density=b.dataset.density;try{localStorage.setItem('yuncheng-density',density)}catch{}render()})}
+if(selected){document.querySelectorAll('.event').forEach(e=>{const bs=[...e.querySelectorAll('[data-correct-event]')];bs.slice(1).forEach(b=>b.remove())});}
+};})();

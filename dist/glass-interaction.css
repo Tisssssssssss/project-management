@@ -1,0 +1,30 @@
+/* Shared material: opaque information, frosted perimeter, no layout motion. */
+:root{--material-edge:rgba(255,255,255,.98);--material-shadow:rgba(46,70,101,.12);--material-rest:0 2px 8px rgba(39,65,98,.025);--material-hover:0 10px 28px rgba(39,65,98,.10),0 2px 6px rgba(39,65,98,.04);--material-speed:180ms}
+:is(.panel,.v4-chart-panel,.daily-counts>button,.finance-summary>div,.project-summary,.boardcard,.competitor-card){border:1px solid rgba(219,227,237,.82);box-shadow:var(--material-rest),inset 0 1px 0 rgba(255,255,255,.85);transition:box-shadow var(--material-speed) ease,border-color var(--material-speed) ease,background-color var(--material-speed) ease;isolation:isolate}
+:is(.panel,.v4-chart-panel,.boardcard,.competitor-card){background-color:rgba(255,255,255,.97)}
+.daily-counts>button,.finance-summary>div,.project-summary{background-color:rgba(246,249,253,.95)}
+.v4-metrics>button{border:1px solid transparent!important;border-radius:10px;background:transparent;box-shadow:none;transition:background-color var(--material-speed),box-shadow var(--material-speed),border-color var(--material-speed)}
+.v4-metrics>button strong,.daily-counts b,.finance-summary b{color:#243246!important}
+.v4-metrics>button:nth-child(2) strong{color:#243246!important}
+:is(.v4-segment,.seg,.refine-density){background:rgba(229,235,243,.7);box-shadow:inset 0 1px 0 #ffffffa6;border-color:#ffffffb3}
+:is(.v4-segment button.selected,.seg button.on,.refine-density button.active){color:#33465e;background:rgba(255,255,255,.96);box-shadow:0 1px 4px #233a5510}
+button:not(.primary):not(.v4-add){text-shadow:none}
+.daily-status{color:#7d90a8}.count-mark{background:#edf1f6;color:#6d819c}.count-mark.green-mark{color:#5d8e7a;background:#edf4f0}.count-mark.amber-mark{color:#a3875d;background:#f6f2eb}.count-mark.violet-mark{color:#8790a4;background:#eff1f5}
+.ledger-settings summary,.task-project,.brief-head .link,.brief-source .link,.brief-edit{color:#5e718b}
+.v4-pie-legend button,.v4-chart-legend button{border-radius:6px}.v4-chart-legend .series-hidden{opacity:.55}
+.tablewrap,table,tbody,.timeline{background:#fff}.tablewrap td,.event p{opacity:1}.ledger-search input,.field input,.field textarea,.field select{background:#fff}.event .badge{color:#63758c;background:transparent}
+:is(.ledger-settings-menu,.refine-more-menu,.v4-tooltip){background:rgba(249,252,255,.94);backdrop-filter:blur(22px) saturate(125%);-webkit-backdrop-filter:blur(22px) saturate(125%);border:1px solid rgba(255,255,255,.98);box-shadow:0 14px 34px rgba(34,60,94,.14),0 0 0 1px rgba(137,160,190,.15)}
+.dialog{border:1px solid rgba(255,255,255,.9);box-shadow:0 16px 48px rgba(30,52,82,.16),inset 0 1px 0 #fff}.dialoghead,.formfoot{background:rgba(246,250,255,.94)}
+@media(hover:hover) and (pointer:fine){
+:is(.panel,.v4-chart-panel,.daily-counts>button,.finance-summary>div,.project-summary,.boardcard,.competitor-card):hover{border-color:var(--material-edge);box-shadow:var(--material-hover),0 0 0 1px rgba(165,188,218,.32),inset 0 2px 0 rgba(255,255,255,1),inset 1px 0 0 rgba(255,255,255,.95),inset -1px 0 0 rgba(220,232,247,.75);background-color:rgba(251,253,255,.97)}
+.v4-metrics>button:hover{border-color:rgba(255,255,255,.98)!important;background:rgba(252,254,255,.76);box-shadow:0 8px 24px rgba(41,70,109,.09),inset 0 1px 0 #fff,0 0 0 1px rgba(174,193,218,.25)}
+.tablewrap tbody tr:hover{background:#f3f6fa}.v4-pie-legend button:hover{background:rgba(237,243,250,.9)}.ledger-settings summary:hover,.task-project:hover{color:#2167db}
+}
+:is(.panel,.v4-chart-panel,.boardcard,.competitor-card):focus-within{border-color:#b6c9e2;box-shadow:0 0 0 1px rgba(145,175,217,.16),var(--material-rest)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #2167db;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){:is(.panel,.v4-chart-panel,.daily-counts>button,.finance-summary>div,.project-summary,.boardcard,.competitor-card,.v4-metrics>button){transition:none}}
+@media(prefers-reduced-transparency:reduce){:is(.panel,.v4-chart-panel,.daily-counts>button,.finance-summary>div,.project-summary,.boardcard,.competitor-card,.ledger-settings-menu,.refine-more-menu,.v4-tooltip,.dialog){background-color:#fff!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+@supports not (backdrop-filter:blur(1px)){:is(.ledger-settings-menu,.refine-more-menu,.v4-tooltip){background:#f9fcff}}
+/* First metric uses the same content inset as its siblings. */
+.v4-metrics>button:first-child{padding-left:20px!important}
+@media(max-width:1100px){.v4-metrics>button:first-child{padding-left:13px!important}}
