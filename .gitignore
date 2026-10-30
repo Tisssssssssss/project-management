@@ -23,3 +23,7 @@ node_modules/
 /dist/account-opening-preview*
 /dist/brand-qingyuan/
 /程序位置与启动说明.md
+# Local dependency symlink and export test artifacts
+/node_modules
+/work/export-*
+/work/liquid-nav/entry.tsx
