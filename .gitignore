@@ -27,3 +27,6 @@ node_modules/
 /node_modules
 /work/export-*
 /work/liquid-nav/entry.tsx
+# Isolated desktop demo build output
+/mac-demo/out/
+/mac-demo/runtime/

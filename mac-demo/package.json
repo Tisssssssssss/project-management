@@ -1,0 +1,17 @@
+{
+  "name": "yantai-mac-demo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Isolated local Mac demo for Yantai workspace",
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "build": "node build.cjs"
+  },
+  "devDependencies": {
+    "electron": "45.2.2"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
