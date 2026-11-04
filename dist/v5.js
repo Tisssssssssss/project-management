@@ -14,7 +14,7 @@ projectlist=function(){
  return host.innerHTML;
 };
 function selectedProjects(all=false){if(all)return data.projects;const ids=new Set(currentIds);return data.projects.filter(p=>ids.has(p.id))}
-function rowsFor(ps){return ps.map(p=>{const e=latest(p),t=data.tasks.filter(t=>t.pid===p.id&&!t.done).sort((a,b)=>a.date.localeCompare(b.date))[0],basis=p.basis||'',cycle=basis.includes('/年')?'年度':basis.includes('/月')?'月度':basis.includes('/总额')?'全周期':'待确认',kind=basis.includes('合同')?'合同':basis.includes('报价')?'报价':basis.includes('预算')?'预算':p.amount==null?'待确认':'参考金额';return [p.unit,p.name,p.background?.trim()||'',p.bu||'',p.owner||'',p.stage,p.amount==null?null:Number(p.amount),'万元',kind,cycle,p.amount==null||!p.confirmed?'待确认':'已确认',e?.date||null,e?[e.title,e.body].filter(Boolean).join('\n'):'',t?.title||'',t?.date||null,p.archived?'已归档':'在跟',p.type||'',created(p)||null]})}
+function rowsFor(ps){return ps.map(p=>{const e=latest(p),t=data.tasks.filter(t=>t.pid===p.id&&!t.done).sort((a,b)=>a.date.localeCompare(b.date))[0],basis=p.basis||'',cycle=basis.includes('/年')?'年度':basis.includes('/月')?'月度':basis.includes('/总额')?'全周期':'待确认',kind=basis.includes('合同')?'合同':basis.includes('报价')?'报价':basis.includes('预算')?'预算':p.amount==null?'待确认':'参考金额';return [p.unit,p.name,p.background?.trim()||'',p.bu||'',p.owner||'',p.stage,p.amount==null?null:Number(p.amount),'万元',kind,cycle,e?.date||null,e?[e.title,e.body].filter(Boolean).join('\n'):'',t?.title||'',t?.date||null,p.archived?'已归档':'在跟',p.type||'',created(p)||null]})}
 async function exportExcel(all=false){
  if(exportBusy)return;const ps=selectedProjects(all);if(!ps.length){toast('当前筛选结果为空，请调整筛选条件后导出');return}
  exportBusy=true;decorateExport();
