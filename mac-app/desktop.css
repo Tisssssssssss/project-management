@@ -1,0 +1,34 @@
+/* MacBook layout: native 36px title strip, 196px navigation, consistent content scale. */
+html,body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif!important}
+body{height:100dvh!important;overflow:hidden!important;padding-top:36px!important;box-sizing:border-box}
+body:before{content:"砚台泼墨";position:fixed;inset:0 0 auto;height:36px;text-align:center;font:500 12px/36px -apple-system,BlinkMacSystemFont,sans-serif;color:#566579;background:rgba(243,247,252,.98);border-bottom:1px solid #e2e8f0;z-index:99999;-webkit-app-region:drag}
+.unified-layout{--shell-side:196px;--shell-header:44px;--shell-pad:24px;min-height:calc(100dvh - 36px)!important}
+.unified-layout .unified-sidebar{top:36px!important;padding:24px 14px 16px}
+.unified-layout .unified-brand{margin-bottom:34px;padding-inline:10px}
+.unified-layout .unified-brand b{font-size:23px;letter-spacing:0}
+.unified-layout .unified-main{height:calc(100dvh - 36px)!important;min-height:0!important}
+.unified-layout .unified-content{padding:16px 24px!important}
+.unified-layout .unified-header{height:44px;min-height:44px}
+.unified-content>.heading h1,.unified-content .v4-heading h1,.unified-content .daily-hero h1{font-size:24px!important;line-height:1.35!important}
+.unified-sidebar [data-dest]{font-size:13px!important;min-height:42px;padding:10px 12px!important}
+.unified-layout .v4-heading{margin-bottom:12px;min-height:38px}
+.unified-layout .v4-metrics{padding:10px 0;margin-bottom:10px;gap:8px}
+.unified-layout .v4-metrics>button,.unified-layout .v4-metrics>button:first-child{min-height:84px;padding:8px 18px!important;grid-template-rows:18px minmax(34px,auto);row-gap:6px}
+.unified-layout .v4-metrics strong{font-size:30px;line-height:36px;font-variant-numeric:tabular-nums}
+.unified-layout .v4-metric-label{font-size:12px;line-height:18px}
+.unified-layout .opp-toolbar{min-height:22px;margin-bottom:12px;font-size:11px}
+.unified-layout .v4-chart-grid{grid-template-columns:minmax(0,1.65fr) minmax(300px,1fr);gap:18px}
+.unified-layout .v4-panel-top{padding:16px 20px 6px}.unified-layout .v4-panel-top h2{font-size:16px}
+.unified-layout .heading .actions{gap:8px}.unified-layout .heading .actions button{font-size:13px;padding:9px 13px;min-height:38px}
+.unified-layout .project-summary{padding:14px 20px!important;margin-block:12px!important;font-size:12px}
+.unified-layout .tabs{margin:8px 0 14px!important;gap:26px}.unified-layout .tabs button{font-size:13px}
+.unified-layout .panel .pad{padding:22px}.unified-layout .panel h2{font-size:17px}
+.unified-layout .tablewrap td{padding-top:18px;padding-bottom:18px;font-size:13px}
+.overlay{top:36px!important;height:calc(100dvh - 36px)!important}
+.dialog.drawer{width:min(680px,75vw)!important;max-height:calc(100dvh - 36px)!important}
+.dialoghead{padding:22px 26px!important}.dialoghead h2{font-size:23px!important}.dialoghead .eyebrow{font-size:10px;letter-spacing:2px}
+.dialog form>.fields{padding:24px 26px!important;gap:20px 18px!important}
+.dialog .field{font-size:13px!important;line-height:1.5}.dialog .field input,.dialog .field select{min-height:42px!important;height:42px!important;padding:9px 12px!important;font-size:14px!important}
+.dialog .field textarea{min-height:110px!important;padding:12px!important;font-size:14px!important;line-height:1.65}
+.dialog .formfoot{padding:14px 26px!important}.dialog .formfoot button{min-height:38px;font-size:13px}
+@media(max-height:750px){.unified-layout .unified-content{padding:12px 20px!important}.unified-layout .v4-metrics>button{min-height:72px}.unified-layout .v4-metrics strong{font-size:28px}.unified-layout .v4-heading{margin-bottom:6px}.unified-layout .v4-chart-grid{gap:14px}.unified-layout .project-summary{padding:10px 16px!important}.dialoghead{padding-block:18px!important}}

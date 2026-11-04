@@ -30,3 +30,4 @@ node_modules/
 # Isolated desktop demo build output
 /mac-demo/out/
 /mac-demo/runtime/
+/mac-app/out/
