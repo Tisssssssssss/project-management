@@ -1,0 +1,27 @@
+/* Give charts the remaining desktop viewport; retain the existing data and chart types. */
+@media(min-width:1000px) and (min-height:540px){
+ .unified-overview .unified-content{padding-top:12px!important;padding-bottom:12px!important}
+ .unified-overview .v4-heading{min-height:36px;margin-bottom:6px}
+ .unified-overview .v4-metrics{padding:8px 0;margin-bottom:8px;gap:12px}
+ .unified-overview .v4-metrics>button,.unified-overview .v4-metrics>button:first-child{grid-template-rows:16px minmax(32px,auto) 14px;row-gap:4px;min-height:82px;padding:6px 20px!important}
+ .unified-overview .v4-metric-label{line-height:16px}
+ .unified-overview .v4-metrics strong{font-size:29px;line-height:32px}
+ .unified-overview .v4-metrics .opp-caption{font-size:10px;line-height:14px}
+ .unified-overview .opp-toolbar{min-height:28px;margin-bottom:8px}
+ .unified-overview .opp-toolbar select{min-height:28px;padding-block:3px}
+ .unified-overview .v4-chart-grid{grid-template-columns:minmax(0,1.75fr) minmax(300px,1fr);gap:16px;flex:1;min-height:0}
+ .unified-overview .v4-panel-top{padding:13px 18px 4px}
+ .unified-overview .v4-chart-bottom{padding:7px 18px 9px}
+ .unified-overview .v4-pie-legend{padding-inline:16px}
+ .unified-overview .v4-distribution-foot{padding-top:4px;padding-bottom:8px}
+}
+@media(min-width:1000px) and (max-height:650px) and (min-height:540px){
+ .unified-overview .unified-content{padding-block:8px!important}
+ .unified-overview .v4-heading{min-height:32px;margin-bottom:4px}
+ .unified-overview .v4-metrics{padding-block:5px;margin-bottom:6px}
+ .unified-overview .v4-metrics>button,.unified-overview .v4-metrics>button:first-child{grid-template-rows:15px minmax(29px,auto) 13px;row-gap:3px;min-height:73px;padding-block:4px!important}
+ .unified-overview .v4-metrics strong{font-size:27px;line-height:29px}
+ .unified-overview .v4-metrics .opp-caption{font-size:9px;line-height:13px}
+ .unified-overview .v4-chart-grid{gap:12px}
+ .unified-overview .v4-panel-top{padding-top:10px}
+}
