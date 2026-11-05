@@ -7,3 +7,7 @@
 @supports not (backdrop-filter:blur(1px)){.unified-sidebar,.unified-header{background:#f8fbff}}@media(prefers-reduced-transparency:reduce){.unified-sidebar,.unified-header{background:#f8fbff;backdrop-filter:none;-webkit-backdrop-filter:none}}
 
 body.v4-screen .unified-layout{--shell-side:0px}body.v4-screen .unified-sidebar{display:none}
+
+/* Header-free workspace: return chrome height to the existing flexible content. */
+.unified-layout{--shell-header:0px}.unified-layout .unified-header{display:none!important}.unified-layout .unified-content{padding-top:22px!important;padding-bottom:18px!important}.unified-content.window-ledger>.panel,.unified-content.window-today>.daily,.unified-content>.workspace-scroll{min-height:0}
+@media(max-height:750px){.unified-layout .unified-content{padding-top:16px!important;padding-bottom:12px!important}}
