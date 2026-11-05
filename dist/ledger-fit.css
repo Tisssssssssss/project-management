@@ -1,0 +1,23 @@
+/* Fit all ledger columns in the available window; allow content to wrap vertically. */
+.tablewrap:has(.background-column){width:100%;min-width:0;max-width:100%;overflow-x:hidden!important;scrollbar-gutter:stable}
+.tablewrap:has(.background-column) table{width:100%!important;min-width:0!important;max-width:100%;table-layout:fixed;white-space:normal}
+.tablewrap:has(.background-column) th,.tablewrap:has(.background-column) td{min-width:0!important;max-width:none!important;white-space:normal!important;overflow-wrap:anywhere;word-break:normal;box-sizing:border-box;padding-inline:12px!important}
+.tablewrap:has(.background-column) th:nth-child(1){width:27%}
+.tablewrap:has(.background-column) th:nth-child(2){width:29%}
+.tablewrap:has(.background-column) th:nth-child(3){width:12%}
+.tablewrap:has(.background-column) th:nth-child(4){width:14%}
+.tablewrap:has(.background-column) th:nth-child(5){width:15%}
+.tablewrap:has(.background-column) th:nth-child(6){width:3%;padding-inline:0!important}
+.tablewrap:has(.background-column) td:last-child{padding-inline:0!important}
+.tablewrap:has(.background-column) .background-column{width:auto;min-width:0!important;max-width:none!important}
+.tablewrap:has(.background-column) .pname{white-space:normal!important;overflow-wrap:anywhere;line-height:1.65}
+.tablewrap:has(.background-column) .background-preview{min-width:0;max-width:100%;line-height:1.75}
+.tablewrap:has(.background-column) .background-preview>span{display:block;-webkit-line-clamp:unset;overflow:visible;white-space:normal;overflow-wrap:anywhere}
+.tablewrap:has(.background-column) td:nth-child(5)>div{max-width:none!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;line-height:1.65}
+.tablewrap:has(.background-column) td .badge{max-width:100%;white-space:normal;line-height:1.5}
+.window-ledger .ledger-toolbar{min-width:0;flex-wrap:wrap;gap:10px}
+.window-ledger .ledger-display{min-width:0;flex-wrap:wrap}
+.window-ledger .ledger-search{min-width:0;gap:12px}
+.window-ledger .ledger-search input{min-width:0;width:0;flex:1}
+.window-ledger .ledger-search select{min-width:0;max-width:160px;flex:none}
+@media(max-width:1100px){.tablewrap:has(.background-column) th,.tablewrap:has(.background-column) td{padding-inline:9px!important;font-size:12px}.tablewrap:has(.background-column) .pname{font-size:13px}.tablewrap:has(.background-column) .background-preview{font-size:11px}}
