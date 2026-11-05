@@ -1,0 +1,7 @@
+const fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto');
+const extensions=new Set(['.pdf','.xls','.xlsx','.csv','.doc','.docx','.ppt','.pptx','.txt','.md','.rtf','.png','.jpg','.jpeg','.gif','.webp','.heic','.numbers','.pages','.key']);
+function createFiles(folder){const file=path.join(folder,'file-links.json');let links={};try{links=JSON.parse(fs.readFileSync(file,'utf8'))}catch(e){if(e.code!=='ENOENT')throw Error('文件关联索引损坏，请保留索引并从备份恢复')}
+ const save=()=>{const temp=file+'.tmp';fs.writeFileSync(temp,JSON.stringify(links),{mode:0o600});fs.renameSync(temp,file)};
+ return {register(filename){const resolved=fs.realpathSync(filename),stat=fs.statSync(resolved);if(!stat.isFile()||!extensions.has(path.extname(resolved).toLowerCase()))throw Error('请选择文档、表格、图片或文本文件，不支持程序和脚本');const fileId=crypto.randomUUID();links[fileId]={path:resolved,name:path.basename(resolved),size:stat.size};save();return {fileId,name:path.basename(resolved),size:stat.size}},resolve(fileId){if(typeof fileId!=='string'||!Object.hasOwn(links,fileId))throw Error('尚未关联原文件，请重新关联');const filename=links[fileId].path;if(!fs.existsSync(filename))throw Error('原文件已移动或删除，请重新关联');if(!fs.statSync(filename).isFile()||!extensions.has(path.extname(filename).toLowerCase()))throw Error('不支持打开此类型');const actual=fs.realpathSync(filename);if(!extensions.has(path.extname(actual).toLowerCase()))throw Error('关联目标类型已改变，请重新关联');return actual}};
+}
+module.exports={createFiles};
