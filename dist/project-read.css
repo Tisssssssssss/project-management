@@ -29,3 +29,10 @@
 @media(prefers-reduced-motion:reduce){.project-read-dialog .read-project-row{transition:none}}
 .dialog.project-read-dialog form{padding:0!important;margin:0!important}
 .project-read-dialog .read-project-copy b{text-wrap:balance}
+.project-read-dialog .read-project-amount{display:block;text-align:right;white-space:nowrap;font-size:16px;font-weight:550;color:#293649;font-variant-numeric:tabular-nums;line-height:1.6}
+.project-read-dialog .read-project-amount small{font-size:10px;font-weight:400;color:#8a96a6;margin-left:3px}
+.project-read-dialog .read-project-notes{margin:16px 2px 0;color:#8a96a6;font-size:11px;line-height:1.75}
+.project-read-dialog .read-project-notes summary{cursor:pointer;width:max-content;color:#7c8b9f;outline-offset:4px}
+.project-read-dialog .read-project-notes p{margin:9px 0 0;color:#7c8b9f;font-size:11px;line-height:1.85}
+.project-read-dialog .read-project-list .empty{padding:32px 18px;color:#8994a4;font-size:13px;text-align:center}
+@media(max-width:600px){.project-read-dialog .read-project-amount{font-size:14px}}
