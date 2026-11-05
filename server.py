@@ -20,7 +20,7 @@ def validate(d):
  for r in d.get('ledger',[]):
   if r.get('pid') not in ids or not isinstance(r.get('cents'),int) or r['cents']<0:raise ValueError('金额或项目关联无效')
  for t in d['tasks']:
-  if t.get('pid') not in ids:raise ValueError('待办项目不存在')
+  if t.get('pid') and t.get('pid') not in ids:raise ValueError('待办项目不存在')
 class Handler(SimpleHTTPRequestHandler):
  def __init__(self,*a,**kw):super().__init__(*a,directory=str(BASE/'dist'),**kw)
  def send_json(self,status,obj):
