@@ -1,0 +1,31 @@
+/* Calm, continuous project drill-down lists. No business rules. */
+.dialog.project-read-dialog{width:min(620px,86vw)!important;background:#f6f8fb}
+.dialog.project-read-dialog .dialoghead{padding:23px 26px 20px!important;align-items:center;background:rgba(250,252,255,.9)}
+.dialog.project-read-dialog .dialoghead .eyebrow{display:none}
+.dialog.project-read-dialog .dialoghead h2{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:22px!important;line-height:1.35;margin:0}
+.project-read-dialog .read-project-count{font-size:11px;line-height:22px;color:#7a8798;background:#eaf0f6;border-radius:6px;padding:0 7px;font-weight:400;letter-spacing:0}
+.dialog.project-read-dialog .dialoghead .close{width:30px;height:30px;min-height:30px;padding:0;border:0;background:transparent;color:#8996a8;border-radius:50%;font-size:24px}
+.dialog.project-read-dialog .dialoghead .close:hover{background:#e9eef5;color:#334258}
+.dialog.project-read-dialog form>.fields{display:block;padding:22px 26px 26px!important}
+.project-read-dialog .read-project-content{display:block;margin:0;min-width:0}
+.project-read-dialog .read-project-context{font-size:12px;color:#778598;line-height:1.7;margin:0 0 16px;padding:0 2px;max-width:100%}
+.project-read-dialog .read-project-list{list-style:none;margin:0;padding:0;border:1px solid #e0e6ee;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.8)}
+.project-read-dialog .read-project-list li{margin:0;padding:0;list-style:none}
+.project-read-dialog .read-project-list li+li{border-top:1px solid #e9edf3}
+.dialog.project-read-dialog .read-project-row{display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;padding:17px 18px;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;text-align:left;min-height:78px;transition:background-color .16s ease}
+.dialog.project-read-dialog .read-project-row:hover{background:#edf3fa;transform:none}
+.project-read-dialog .read-project-copy{min-width:0;flex:1}
+.project-read-dialog .read-project-copy b{display:block;color:#293649;font-size:14px;font-weight:550;line-height:1.65;white-space:normal;overflow-wrap:anywhere;text-align:left;max-width:none}
+.project-read-dialog .read-project-copy p{margin:5px 0 0;font-size:12px;color:#8994a4;line-height:1.5}
+.project-read-dialog .read-project-end{display:flex;align-items:center;gap:12px;flex:none}
+.project-read-dialog .read-project-end .badge{font-size:10px;padding:4px 7px;line-height:1.5;white-space:nowrap;font-weight:400}
+.project-read-dialog .read-project-arrow{color:#a8b2bf;font-size:23px;font-weight:300;line-height:1}
+.project-read-dialog .read-project-row:hover .read-project-arrow{color:#60758f}
+.project-read-dialog .read-project-row:focus-visible{outline:2px solid #7099c8;outline-offset:-3px;background:#edf3fa}
+.dialog.project-read-dialog .formfoot{padding:13px 26px!important;background:rgba(250,252,255,.8);border-color:#e3e9f0;justify-content:flex-end}
+.project-read-dialog .draft-status{display:none}
+.project-read-dialog .formfoot .cancel{font-size:12px;min-height:34px;padding:7px 17px;border-radius:8px;margin-left:auto}
+@media(max-width:600px){.dialog.project-read-dialog{width:100vw!important}.dialog.project-read-dialog form>.fields{padding:18px!important}.dialog.project-read-dialog .read-project-row{padding:15px 14px;gap:12px}.project-read-dialog .read-project-end{gap:7px}}
+@media(prefers-reduced-motion:reduce){.project-read-dialog .read-project-row{transition:none}}
+.dialog.project-read-dialog form{padding:0!important;margin:0!important}
+.project-read-dialog .read-project-copy b{text-wrap:balance}
