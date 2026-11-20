@@ -38,3 +38,11 @@
 .tablewrap:has(.background-column) td:last-child{color:#a4afbd;transition:color 160ms ease}
 .tablewrap:has(.background-column) tr:hover td:last-child{color:#637e9e}
 @media(prefers-reduced-motion:reduce){.tablewrap:has(.background-column) tbody tr{transition:none}}
+
+.ledger-search { flex-wrap: wrap; }
+.ledger-date-filter { position: relative; flex: none; }
+.ledger-date-filter > summary { padding: 8px 10px; }
+.ledger-date-menu { right: 0; left: auto; width: 240px; padding: 14px; z-index: 12; }
+.ledger-date-menu label { display: grid; gap: 4px; margin-bottom: 10px; }
+.ledger-search .ledger-date-menu input, .ledger-search .ledger-date-menu select { width: 100%; max-width: none; }
+.ledger-date-actions { display: flex; gap: 8px; justify-content: flex-end; }
