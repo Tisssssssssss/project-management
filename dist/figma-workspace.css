@@ -72,3 +72,78 @@
   outline: 2px solid #5c8be1;
   outline-offset: 2px;
 }
+
+/* Page structures from the desktop design. */
+.figma-overview-panel {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  padding: 20px;
+  background: #fff;
+  border: 1px solid var(--workspace-border);
+  border-radius: 14px;
+  box-shadow: var(--workspace-shadow);
+}
+.unified-layout .figma-overview-panel .v4-metrics {
+  border: 0;
+  padding: 0;
+  gap: 12px;
+}
+.unified-layout .figma-overview-panel .v4-chart-panel {
+  box-shadow: none;
+  border-radius: 12px;
+}
+.unified-layout .window-ledger .ledger-search { display: flex; align-items: center; }
+.unified-layout .window-ledger .ledger-search > #search { flex: 1; min-width: 150px; max-width: none; }
+.unified-layout .window-ledger .ledger-display .seg {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  background: #ebf1f8;
+  border-radius: 9px;
+}
+.unified-layout .window-ledger .tablewrap tbody td { padding-block: 15px !important; }
+.figma-today .daily-counts { display: none; }
+.figma-today .daily-list { min-height: 100%; }
+.figma-record-panel, .unified-layout .settings-v3 { min-height: 100%; }
+.figma-record-panel { padding: 0 20px; }
+.figma-record-tabs { display: flex; gap: 16px; padding-block: 10px; flex-wrap: wrap; }
+.figma-record-tabs button {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 8px 0;
+}
+.figma-record-tabs button[aria-pressed="true"] {
+  color: var(--workspace-accent);
+  border-bottom-color: var(--workspace-accent);
+}
+.figma-record-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 80px;
+  padding: 16px 0;
+  text-align: left;
+  border: 0;
+  border-top: 1px solid #e6edf4;
+  border-radius: 0;
+  background: transparent;
+}
+.figma-record-row:hover { background: #f5f8fd; }
+.figma-record-row > span:first-child { min-width: 0; overflow-wrap: anywhere; }
+.figma-record-row strong, .figma-record-row small { display: block; }
+.figma-record-row small { margin-top: 5px; color: #65768b; }
+.figma-row-meta { display: flex; align-items: center; gap: 14px; color: #65768b; font-size: 12px; }
+.figma-row-arrow { width: 6px; height: 6px; border: solid currentColor; border-width: 1.5px 1.5px 0 0; transform: rotate(45deg); }
+.figma-audit { padding-block: 12px; border-top: 1px solid #e6edf4; }
+.figma-audit summary { cursor: pointer; }
+.figma-project-picker { display: grid; gap: 8px; }
+@media (max-height: 650px) {
+  .figma-overview-panel { padding: 12px; }
+  .unified-layout .figma-overview-panel .v4-metrics > button { min-height: 60px; }
+}
