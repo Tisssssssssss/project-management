@@ -1,7 +1,7 @@
 (function () {
   const renderWorkspace = render;
   let libraryScope = 'all';
-  const libraryFilters = [['all', '全部资料'], ['active', '在跟项目'], ['starred', '已关注项目']];
+  const libraryFilters = [['all', '全部资料'], ['active', '项目文件'], ['starred', '我的收藏']];
   const chevron = '<span class="figma-row-arrow" aria-hidden="true"></span>';
 
   function actionButton(label, handler, primary = false) {
@@ -30,6 +30,8 @@
     toolbar.className = 'figma-record-tabs';
     for (const [key, name] of libraryFilters) {
       const button = actionButton(name, () => { libraryScope = key; render(); });
+      if (key === 'active') button.title = '在跟项目的文件';
+      if (key === 'starred') button.title = '已关注项目的文件';
       button.setAttribute('aria-pressed', String(libraryScope === key));
       toolbar.append(button);
     }
@@ -64,6 +66,23 @@
     scroll.replaceChildren(panel);
   }
 
+  function applyNavigation() {
+    const icons = {
+      '工作台': 'M2 13V8m6 5V3m6 10V6',
+      '项目台账': 'M2 4h12v9H2z M2 7h12',
+      '待办与风险': 'M3 4h10M3 8h10M3 12h7',
+      '资料知识库': 'M2 4h12v9H2z M2 4l2-2h4l2 2',
+      '设置': 'M3 4h10M3 8h10M3 12h10'
+    };
+    for (const button of document.querySelectorAll('.unified-sidebar [data-dest]')) {
+      const icon = button.querySelector('.shell-symbol');
+      const path = icons[button.dataset.dest];
+      if (icon && path && !icon.querySelector('svg')) {
+        icon.innerHTML = `<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
+      }
+    }
+  }
+
   function settings(content) {
     const panel = content.querySelector('.settings-v3');
     const actions = panel?.querySelector('.backup-actions');
@@ -92,11 +111,37 @@
       history.before(details);
       details.append(summary, history);
       history.querySelector('h2')?.remove();
+      for (const note of [...panel.children].filter(el => el.matches('p.muted, .storage-status'))) {
+        details.append(note);
+      }
     }
+  }
+
+  function foldControls(host, title, controls) {
+    const items = controls.filter(Boolean);
+    if (!host || !items.length) return;
+    const details = document.createElement('details');
+    details.className = 'figma-secondary';
+    const summary = document.createElement('summary');
+    summary.setAttribute('aria-label', title);
+    summary.title = title;
+    summary.textContent = '⋯';
+    const body = document.createElement('div');
+    body.className = 'figma-secondary-body';
+    body.append(...items);
+    details.append(summary, body);
+    host.append(details);
+    details.onkeydown = event => {
+      if (event.key === 'Escape' && details.open) {
+        details.open = false;
+        summary.focus();
+      }
+    };
   }
 
   render = function () {
     renderWorkspace();
+    applyNavigation();
     const content = document.querySelector('.unified-content');
     if (!content || selected) return;
     if (page === '工作台') {
@@ -109,10 +154,28 @@
       metrics.before(panel);
       panel.append(metrics);
       const toolbar = content.querySelector('.opp-toolbar');
-      if (toolbar) panel.append(toolbar);
+      foldControls(content.querySelector('.v4-heading'), '统计选项', [
+        content.querySelector('.v4-time-controls'),
+        content.querySelector('.shell-overview-actions'),
+        toolbar
+      ]);
+      for (const graph of chart.querySelectorAll('.v4-chart-panel')) {
+        foldControls(graph.querySelector('.v4-panel-top'), '图表选项', [
+          graph.querySelector('.v4-panel-top > .v4-segment'),
+          graph.querySelector('.opp-measure'),
+          graph.querySelector('.v4-chart-bottom'),
+          graph.querySelector('.v4-distribution-foot')
+        ]);
+      }
       panel.append(chart);
     } else if (page === '待办与风险') {
       content.classList.add('figma-today');
+      foldControls(content.querySelector('.daily-list-head'), '待办范围', [
+        content.querySelector('.daily-list-filters')
+      ]);
+      for (const row of content.querySelectorAll('.daily-task')) {
+        foldControls(row, '待办操作', [row.querySelector('.daily-task-actions')]);
+      }
     } else if (page === '资料知识库') {
       library(content);
     } else if (page === '设置') {
