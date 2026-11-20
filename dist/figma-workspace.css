@@ -1,0 +1,74 @@
+/* Visual treatment shared by the five workspace views. */
+.unified-layout {
+  --workspace-canvas: #e7eef5;
+  --workspace-border: #d8e2ee;
+  --workspace-ink: #223145;
+  --workspace-accent: #245dce;
+  --workspace-shadow: 0 8px 24px rgba(26, 46, 79, .10);
+  background: var(--workspace-canvas);
+  color: var(--workspace-ink);
+}
+.unified-layout .unified-main { background: var(--workspace-canvas); }
+.unified-layout .unified-sidebar {
+  background: #f0f5fa;
+  border-right: 1px solid var(--workspace-border);
+}
+.unified-layout .unified-brand b { letter-spacing: 0 !important; }
+.unified-layout .sidebar-liquid-water,
+.unified-layout .sidebar-liquid-fallback { display: none; }
+.unified-layout .unified-sidebar [data-dest] { border-radius: 8px; }
+.unified-layout .unified-sidebar [data-dest].active,
+.unified-layout .unified-sidebar .sidebar-liquid-host [data-dest].active {
+  background: #e6effd;
+  border-color: #cfdef7;
+  color: #204fae;
+  box-shadow: none;
+}
+.unified-layout .unified-content :is(.panel, .v4-chart-panel, .daily-list) {
+  background: #fff;
+  border-color: var(--workspace-border);
+  border-radius: 14px;
+  box-shadow: var(--workspace-shadow);
+}
+.unified-layout .daily-counts > button,
+.unified-layout .v4-metrics > button {
+  background: #f1f6fd;
+  border: 1px solid var(--workspace-border);
+  border-radius: 10px;
+}
+.unified-layout .window-ledger thead th { background: #ebf1f8; }
+.unified-layout .window-ledger tbody td { border-color: #e6edf4; }
+.unified-layout .window-ledger .ledger-scopes button:not(.active) {
+  border-bottom-color: transparent;
+}
+.unified-layout .ledger-search > :is(input, select),
+.unified-layout .ledger-date-filter > summary {
+  box-sizing: border-box;
+  min-height: 38px;
+  border: 1px solid var(--workspace-border);
+  border-radius: 8px;
+  background: #fff;
+}
+.unified-layout .ledger-date-filter > summary {
+  display: flex;
+  align-items: center;
+}
+.unified-layout .ledger-date-filter[open] > summary { background: #edf4ff; }
+.unified-layout .ledger-settings summary::after {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-inline: 8px 2px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+.unified-layout .ledger-settings[open] summary::after {
+  transform: translateY(1px) rotate(225deg);
+}
+.unified-layout .unified-content button.primary { background: var(--workspace-accent); }
+.unified-layout .unified-content :is(button, summary, input, select):focus-visible {
+  outline: 2px solid #5c8be1;
+  outline-offset: 2px;
+}
