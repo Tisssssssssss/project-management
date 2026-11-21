@@ -55,6 +55,24 @@ npx esbuild pie-entry.tsx --bundle --minify --format=iife --outfile=../../dist/r
 
 ## 更新记录
 
+### 2026-11-22 · 复用液态玻璃选中态
+
+将原有导航动效开放为 `window.workspaceLiquidGlass.mount`，保留现有导航的接入方式。适用于每次只选中一项、同宽纵向排列的分组，例如资料分类或设置子菜单。首次挂载需传入当前按钮，重建分组前调用返回的清理函数。通过语法检查和隔离 Mac Electron 挂载测试；横向切换动画及真实背景折射不在当前实现范围内。
+
+#### 在其他模块接入
+
+工作区已加载 `sidebar-liquid.js` 和 `sidebar-liquid.css`。现有模块负责按钮点击和选中状态，液态玻璃层只读取该状态并绘制动效。以下以单选切换按钮为例。
+
+```js
+const disposeGlass = window.workspaceLiquidGlass.mount(group, group.querySelectorAll('button'), {
+  selectionAttribute: 'aria-pressed',
+  selectionValue: 'true'
+});
+// 重建分组或离开模块前调用 disposeGlass()。
+```
+
+容器需要为玻璃外缘留出空间，避免使用会裁剪装饰层的祖先容器。Figma 台账画板的导航行参考尺寸为 168 × 40，图标为 16 × 16。应用用按钮实际位置计算胶囊尺寸，以双速度插值形成拖尾，然后用 WebGL 绘制高光、虹彩与涟漪。WebGL 不可用时使用 CSS 后备层。
+
 ### 2026-11-22 · 时间筛选完整显示（Mac 1.2.12）
 
 时间筛选浮层完整显示日期依据、日期字段与操作按钮，无需内部滚动。日期字段显示应用日历图标，继续使用系统日期选择器。使用隔离数据在 macOS Electron 的 1024 × 620 窗口验证 100% 和 120% 比例下的面板完整性、应用按钮命中、Esc 焦点恢复、台账箭头对齐及长项目名与待办更多按钮的间距。原生日历弹窗未做人工点选验收。
