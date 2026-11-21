@@ -141,78 +141,7 @@
     };
   }
 
-  const liquidGroups = [
-    ['.ledger-display .seg', 'button[data-view]', '.on'],
-    ['.ledger-scopes', 'button', '.active'],
-    ['.daily-tabs', 'button[data-work]', '.active'],
-    ['.figma-record-tabs', 'button', '[aria-pressed="true"]']
-  ];
-  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-
-  function boundsWithin(layer, host) {
-    const rect = layer.getBoundingClientRect();
-    const origin = host.getBoundingClientRect();
-    return { x: rect.left - origin.left - host.clientLeft,
-      y: rect.top - origin.top - host.clientTop,
-      width: rect.width, height: rect.height };
-  }
-
-  function updateLiquidSelection(host, active, layer, previous) {
-    const target = boundsWithin(active, host);
-    if (!target.width || !target.height) return;
-    const position = rect => `translate(${rect.x}px, ${rect.y}px)`;
-    Object.assign(layer.style, {
-      width: target.width + 'px', height: target.height + 'px',
-      transform: position(target)
-    });
-    if (!previous || reducedMotion.matches) return;
-    if (Math.abs(previous.y - target.y) > 4) {
-      layer.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 140 });
-      return;
-    }
-    if (Math.abs(previous.x - target.x) <= 0.5 && Math.abs(previous.width - target.width) <= 0.5) return;
-    layer.animate([
-      { transform: position(previous), width: previous.width + 'px' },
-      { transform: position(target), width: target.width + 'px' }
-    ], { duration: 220, easing: 'cubic-bezier(.22,.8,.25,1)' });
-  }
-
-  function mountHorizontalGlass(content, previous, focusedGroup) {
-    for (const [selector, itemSelector, selectedSelector] of liquidGroups) {
-      const host = content.querySelector(selector);
-      if (!host) continue;
-      const items = [...host.querySelectorAll(itemSelector)];
-      const active = items.find(item => item.matches(selectedSelector));
-      if (!active) continue;
-
-      items.forEach(item => item.setAttribute('aria-pressed', String(item === active)));
-      const layer = document.createElement('span');
-      layer.className = 'workspace-liquid-indicator';
-      layer.setAttribute('aria-hidden', 'true');
-      host.classList.add('workspace-liquid-group');
-      host.prepend(layer);
-      if (selector === focusedGroup) active.focus({ preventScroll: true });
-      updateLiquidSelection(host, active, layer, previous.get(selector));
-
-      const resize = new ResizeObserver(() => updateLiquidSelection(host, active, layer));
-      resize.observe(host);
-      items.forEach(item => resize.observe(item));
-      liquidObservers.push(resize);
-    }
-  }
-
-  let liquidObservers = [];
   render = function () {
-    const previous = new Map();
-    let focusedGroup;
-    for (const [selector, itemSelector] of liquidGroups) {
-      const host = document.querySelector(selector);
-      if (host?.contains(document.activeElement) && document.activeElement.matches(itemSelector)) focusedGroup = selector;
-      const layer = host?.querySelector('.workspace-liquid-indicator');
-      if (layer) previous.set(selector, boundsWithin(layer, host));
-    }
-    liquidObservers.forEach(observer => observer.disconnect());
-    liquidObservers = [];
     renderWorkspace();
     applyNavigation();
     const content = document.querySelector('.unified-content');
@@ -254,7 +183,6 @@
     } else if (page === '设置') {
       settings(content);
     }
-    mountHorizontalGlass(content, previous, focusedGroup);
   };
   render();
 })();

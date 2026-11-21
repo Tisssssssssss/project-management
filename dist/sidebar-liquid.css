@@ -16,21 +16,3 @@
     background: #e2edff;
   }
 }
-
-
-/* Horizontal groups use a passive glass layer and retain the existing active styles. */
-.workspace-liquid-group { position: relative; isolation: isolate; }
-.workspace-liquid-group > button { position: relative; z-index: 1; }
-.workspace-liquid-indicator {
-  position: absolute;
-  inset: 0 auto auto 0;
-  z-index: 2;
-  pointer-events: none;
-  box-sizing: border-box;
-  border-radius: 8px;
-  background: linear-gradient(160deg, #fff2, #8ac8ec12 45%, #79b4f31a);
-  box-shadow: inset 0 1px 1px #fff9, inset 0 -1px 1px #73a4d453;
-}
-@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
-  .workspace-liquid-indicator { display: none; }
-}
