@@ -14,16 +14,6 @@
   border-right: 1px solid var(--workspace-border);
 }
 .unified-layout .unified-brand b { letter-spacing: 0 !important; }
-.unified-layout .sidebar-liquid-water,
-.unified-layout .sidebar-liquid-fallback { display: none; }
-.unified-layout .unified-sidebar [data-dest] { border-radius: 8px; }
-.unified-layout .unified-sidebar [data-dest].active,
-.unified-layout .unified-sidebar .sidebar-liquid-host [data-dest].active {
-  background: #e5effd;
-  border-color: #d1e0fa;
-  color: #245dce;
-  box-shadow: none;
-}
 .unified-layout .unified-content :is(.panel, .v4-chart-panel, .daily-list) {
   background: #fff;
   border-color: var(--workspace-border);
