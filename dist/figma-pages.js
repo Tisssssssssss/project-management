@@ -2,7 +2,7 @@
   const renderWorkspace = render;
   let libraryScope = 'all';
   const libraryFilters = [['all', '全部资料'], ['active', '项目文件'], ['starred', '我的收藏']];
-  const chevron = '<span class="figma-row-arrow" aria-hidden="true"></span>';
+  const chevron = workspaceIcon('right');
 
   function actionButton(label, handler, primary = false) {
     const button = document.createElement('button');
@@ -49,7 +49,7 @@
       }
     }
     if (panel.children.length === 1) panel.insertAdjacentHTML('beforeend', '<p class="empty">此范围暂无资料</p>');
-    const add = actionButton('＋ 添加资料', () => {
+    const add = actionButton('添加资料', () => {
       if (!data.projects.length) return toast('请先登记项目');
       modal('选择资料所属项目', '<div class="figma-project-picker"></div>', () => {}, { readonly: true, drawer: true });
       const picker = document.querySelector('.figma-project-picker');
@@ -62,6 +62,7 @@
     }, true);
     const actions = document.createElement('div');
     actions.className = 'actions';
+    add.insertAdjacentHTML('afterbegin', workspaceIcon('plus'));
     actions.append(add);
     heading.append(actions);
     scroll.replaceChildren(panel);
@@ -71,8 +72,8 @@
     const icons = {
       '工作台': 'M2 13V8m6 5V3m6 10V6',
       '项目台账': 'M2 4h12v9H2z M2 7h12',
-      '待办与风险': 'M3 4h10M3 8h10M3 12h7',
-      '资料知识库': 'M2 4h12v9H2z M2 4l2-2h4l2 2',
+      '待办与风险': 'M2.5 4h11M2.5 8h11M2.5 12h8',
+      '资料知识库': 'M2.5 5h11v8h-11z M2.5 5l2-2h3l2 2',
       '设置': 'M2 4h12M2 8h12M2 12h12 M5 2v4M10 6v4M6 10v4'
     };
     for (const button of document.querySelectorAll('.unified-sidebar [data-dest]')) {

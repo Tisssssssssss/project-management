@@ -129,7 +129,6 @@
 .figma-record-row strong, .figma-record-row small { display: block; }
 .figma-record-row small { margin-top: 5px; color: #65768b; }
 .figma-row-meta { display: flex; align-items: center; gap: 14px; color: #65768b; font-size: 12px; }
-.figma-row-arrow { width: 6px; height: 6px; border: solid currentColor; border-width: 1.5px 1.5px 0 0; transform: rotate(45deg); }
 .figma-audit { padding-block: 12px; border-top: 1px solid #e6edf4; }
 .figma-audit summary { cursor: pointer; }
 .figma-project-picker { display: grid; gap: 8px; }
@@ -310,13 +309,6 @@
 }
 .unified-layout .window-ledger th:last-child { width: 36px; }
 .unified-layout .window-ledger .ledger-row-end { text-align: center; }
-.figma-row-arrow {
-  display: inline-block;
-  flex: none;
-  box-sizing: border-box;
-  margin-inline: 4px;
-  color: #65768b;
-}
 .unified-layout .unified-sidebar .shell-symbol {
   display: inline-grid;
   place-items: center;
@@ -396,4 +388,61 @@
   margin: 0 0 14px;
   font-size: 14px;
   color: var(--workspace-ink);
+}
+
+/* Keep icon dimensions independent of labels and hit areas. */
+.workspace-icon { display: block; flex: none; }
+.unified-layout button:has(> .workspace-icon),
+.dialog button.close:has(> .workspace-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.unified-layout .task-project { min-width: 0; max-width: 100%; }
+.task-project > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.unified-layout .ledger-row-end > .workspace-icon { margin-inline: auto; }
+.read-project-arrow { display: grid; place-items: center; flex: 0 0 16px; }
+.dialog .dialoghead .close:has(> .workspace-icon) {
+  align-self: flex-start;
+  box-sizing: border-box;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+}
+.ledger-date-basis {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 12px;
+  padding: 0;
+  border: 0;
+}
+.ledger-date-basis legend { margin-bottom: 6px; color: #5e718b; font-size: 12px; }
+.ledger-date-menu .ledger-date-basis label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 5px 8px;
+  border: 1px solid var(--workspace-border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.ledger-date-basis label:has(:checked) { background: #e5effd; color: #245dce; }
+.ledger-date-menu .ledger-date-basis input[type="radio"] {
+  width: 14px;
+  height: 14px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  accent-color: #245dce;
+}
+.ledger-date-menu input[type="date"] { box-sizing: border-box; padding-inline: 10px 12px; }
+.ledger-date-menu input[type="date"]::-webkit-calendar-picker-indicator {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  padding: 0;
 }
