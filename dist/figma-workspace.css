@@ -254,3 +254,89 @@
 .unified-layout .figma-today .daily-list-head { border-bottom: 1px solid #e6edf4; }
 .unified-layout .figma-today .daily-list-head .figma-secondary { margin-bottom: 8px; }
 .unified-layout .figma-overview-panel .v4-panel-top { overflow: visible; }
+
+/* Common arrow geometry for filters, export actions and record rows. */
+.unified-layout {
+  --control-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%235d7089' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m4 6 4 4 4-4'/%3E%3C/svg%3E");
+}
+.unified-layout .window-ledger .ledger-search > #filter,
+.unified-layout .window-ledger .ledger-date-filter > summary {
+  height: 38px;
+  padding: 0 36px 0 12px;
+  appearance: none;
+  background-image: var(--control-chevron);
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+}
+.unified-layout .ledger-date-filter > summary::after { content: none; }
+.unified-layout .ledger-date-filter[open] > summary { background-color: #edf4ff; }
+.unified-layout .ledger-date-filter > summary { overflow-wrap: anywhere; height: auto; }
+.unified-layout .excel-export-group [data-action="export"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.unified-layout .excel-export-group .excel-export-more {
+  position: relative;
+  flex: 0 0 36px;
+  padding: 0;
+  border-left: 0;
+  background: #fff var(--control-chevron) center / 16px no-repeat;
+}
+.unified-layout .excel-export-more::before {
+  content: "";
+  position: absolute;
+  inset: 8px auto 8px 0;
+  border-left: 1px solid var(--workspace-border);
+}
+.unified-layout .excel-export-group .excel-export-more:hover,
+.unified-layout .excel-export-group .excel-export-more[aria-expanded="true"] { background-color: #edf4ff; }
+.unified-layout .window-ledger .ledger-display .seg {
+  gap: 2px;
+  padding: 3px;
+  background: #edf2f8;
+  border: 1px solid var(--workspace-border);
+}
+.unified-layout .window-ledger .ledger-display .seg button {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.unified-layout .window-ledger .ledger-display .seg button.on {
+  background: #fff;
+  border-color: var(--workspace-border);
+  font-weight: 600;
+}
+.unified-layout .window-ledger th:last-child { width: 36px; }
+.unified-layout .window-ledger .ledger-row-end { text-align: center; }
+.figma-row-arrow {
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  margin-inline: 4px;
+  color: #65768b;
+}
+.unified-layout .unified-sidebar .shell-symbol {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 18px;
+  width: 18px;
+}
+.unified-layout .figma-secondary-body {
+  min-width: 0;
+  max-width: min(340px, calc(100vw - var(--shell-side) - 36px));
+  overflow: auto;
+}
+.unified-layout .v4-heading .figma-secondary-body { width: max-content; }
+.unified-layout .figma-record-row .figma-row-meta {
+  flex: 0 1 176px;
+  min-width: 24px;
+}
+.figma-row-meta > span:first-child {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

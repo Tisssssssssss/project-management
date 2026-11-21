@@ -43,7 +43,8 @@
       for (const file of (project.files || []).filter(f => !f.deletedAt)) {
         const row = actionButton('', () => openFiles(project));
         row.className = 'figma-record-row';
-        row.innerHTML = `<span><strong>${esc(file.name)}</strong><small>${esc(project.name)} · ${Math.ceil(file.size / 1024)} KB</small></span><span class="figma-row-meta">${esc(project.stage || '')}${chevron}</span>`;
+        row.title = file.name;
+        row.innerHTML = `<span><strong>${esc(file.name)}</strong><small>${esc(project.name)} · ${Math.ceil(file.size / 1024)} KB</small></span><span class="figma-row-meta"><span>${esc(project.stage || '')}</span>${chevron}</span>`;
         panel.append(row);
       }
     }
@@ -72,7 +73,7 @@
       '项目台账': 'M2 4h12v9H2z M2 7h12',
       '待办与风险': 'M3 4h10M3 8h10M3 12h7',
       '资料知识库': 'M2 4h12v9H2z M2 4l2-2h4l2 2',
-      '设置': 'M3 4h10M3 8h10M3 12h10'
+      '设置': 'M2 4h12M2 8h12M2 12h12 M5 2v4M10 6v4M6 10v4'
     };
     for (const button of document.querySelectorAll('.unified-sidebar [data-dest]')) {
       const icon = button.querySelector('.shell-symbol');
@@ -96,7 +97,7 @@
       [excel, '导出全部项目 Excel', '项目导出', '导出']];
     for (const [button, title, note, label] of labels) {
       button.className = 'figma-record-row';
-      button.innerHTML = `<span><strong>${title}</strong><small>${note}</small></span><span class="figma-row-meta">${label}${chevron}</span>`;
+      button.innerHTML = `<span><strong>${title}</strong><small>${note}</small></span><span class="figma-row-meta"><span>${label}</span>${chevron}</span>`;
       list.append(button);
     }
     actions.replaceWith(list);
@@ -125,7 +126,7 @@
     const summary = document.createElement('summary');
     summary.setAttribute('aria-label', title);
     summary.title = title;
-    summary.textContent = '⋯';
+    summary.innerHTML = '<svg aria-hidden="true" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><circle cx="3" cy="8" r="1.2"/><circle cx="8" cy="8" r="1.2"/><circle cx="13" cy="8" r="1.2"/></svg>';
     const body = document.createElement('div');
     body.className = 'figma-secondary-body';
     body.append(...items);
