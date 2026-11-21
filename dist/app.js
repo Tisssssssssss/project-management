@@ -1,4 +1,5 @@
 const workspaceIconPaths = {
+  calendar: 'M3 4h10v10H3zM3 7h10M6 2v4M10 2v4',
   plus: 'M8 3v10M3 8h10',
   close: 'm4 4 8 8m0-8-8 8',
   right: 'm6 4 4 4-4 4',

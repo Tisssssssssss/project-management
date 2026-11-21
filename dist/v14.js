@@ -13,6 +13,9 @@ function addLedgerDateFilter(filters) {
   const form = document.createElement('form');
   form.className = 'ledger-settings-menu ledger-date-menu';
   form.innerHTML = '<h3>时间筛选</h3><fieldset class="ledger-date-basis"><legend>日期依据</legend><label><input type="radio" name="field" value="followup">最近跟进</label><label><input type="radio" name="field" value="created">登记日期</label></fieldset><label>开始日期<input name="start" type="date"></label><label>结束日期<input name="end" type="date"></label><div class="ledger-date-actions"><button type="button">清除时间</button><button class="primary" type="submit">应用</button></div>';
+  for (const input of form.querySelectorAll('input[type="date"]')) {
+    input.insertAdjacentHTML('afterend', workspaceIcon('calendar'));
+  }
   form.elements.field.value = field;
   form.elements.start.value = start;
   form.elements.end.value = end;
@@ -32,6 +35,17 @@ function addLedgerDateFilter(filters) {
     ledgerDates = { field, start: '', end: '' };
     render();
   };
+  form.setAttribute('popover', 'manual');
+  details.addEventListener('toggle', () => {
+    if (!details.open) {
+      if (form.matches(':popover-open')) form.hidePopover();
+      return;
+    }
+    form.showPopover();
+    const trigger = summary.getBoundingClientRect();
+    form.style.left = Math.max(8, trigger.right - form.offsetWidth) + 'px';
+    form.style.top = Math.max(8, Math.min(trigger.bottom + 8, innerHeight - form.offsetHeight - 8)) + 'px';
+  });
   details.append(summary, form);
   filters.append(details);
 }
@@ -80,4 +94,9 @@ document.addEventListener('keydown', event => {
   event.preventDefault();
   panel.open = false;
   panel.querySelector('summary').focus();
+});
+
+window.addEventListener('resize', () => {
+  const date = document.querySelector('.ledger-date-filter[open]');
+  if (date) date.open = false;
 });

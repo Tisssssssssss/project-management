@@ -358,8 +358,7 @@
   inset: calc(100% + 8px) 0 auto auto;
   z-index: 20;
   box-sizing: border-box;
-  max-height: min(340px, 42vh);
-  overflow: auto;
+
   background: #fff;
   border: 1px solid var(--workspace-border);
   border-radius: 12px;
@@ -445,4 +444,43 @@
   height: 16px;
   margin: 0;
   padding: 0;
+}
+
+/* Only the stage list scrolls. The date form keeps its actions in view. */
+.ledger-stage-options {
+  max-height: min(340px, 42vh);
+  overflow: auto;
+}
+.unified-layout .ledger-filter > .ledger-date-menu { padding: 12px; }
+.unified-layout .ledger-date-menu h3 { margin-bottom: 8px; }
+.ledger-date-menu > label { position: relative; margin-bottom: 8px; gap: 4px; }
+.ledger-date-menu .ledger-date-basis { margin-bottom: 8px; }
+.ledger-date-menu .ledger-date-actions { padding-top: 8px; }
+.ledger-date-menu input[type="date"] { padding-right: 36px; position: relative; }
+.ledger-date-menu input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: 36px;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.ledger-date-menu input[type="date"] + .workspace-icon {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  color: #5d7089;
+  pointer-events: none;
+}
+@media (max-height: 570px) {
+  .unified-layout .ledger-date-menu h3 { display: none; }
+  .ledger-date-menu > label { margin-bottom: 6px; }
+  .ledger-date-menu input[type="date"] { min-height: 32px; padding-block: 4px; }
+  .ledger-date-menu input[type="date"] + .workspace-icon { bottom: 8px; }
+}
+.unified-layout .figma-today .daily-task > :first-child { min-width: 0; }
+.unified-layout .ledger-date-filter > .ledger-date-menu[popover] {
+  position: fixed;
+  inset: auto;
+  margin: 0;
 }
