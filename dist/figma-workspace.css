@@ -1,10 +1,10 @@
 /* Visual treatment shared by the five workspace views. */
 .unified-layout {
   --workspace-canvas: #e7eef5;
-  --workspace-border: #d8e2ee;
+  --workspace-border: #d8e1ed;
   --workspace-ink: #223145;
   --workspace-accent: #245dce;
-  --workspace-shadow: 0 8px 24px rgba(26, 46, 79, .10);
+  --workspace-shadow: 0 8px 24px rgba(26, 46, 79, .13);
   background: var(--workspace-canvas);
   color: var(--workspace-ink);
 }
@@ -19,9 +19,9 @@
 .unified-layout .unified-sidebar [data-dest] { border-radius: 8px; }
 .unified-layout .unified-sidebar [data-dest].active,
 .unified-layout .unified-sidebar .sidebar-liquid-host [data-dest].active {
-  background: #e6effd;
-  border-color: #cfdef7;
-  color: #204fae;
+  background: #e5effd;
+  border-color: #d1e0fa;
+  color: #245dce;
   box-shadow: none;
 }
 .unified-layout .unified-content :is(.panel, .v4-chart-panel, .daily-list) {
@@ -88,7 +88,7 @@
 .unified-layout .figma-overview-panel .v4-metrics {
   border: 0;
   padding: 0;
-  gap: 12px;
+  gap: 16px;
 }
 .unified-layout .figma-overview-panel .v4-chart-panel {
   box-shadow: none;
@@ -157,7 +157,7 @@
 .unified-layout .unified-sidebar {
   box-sizing: border-box;
   padding: 23px 12px 24px;
-  background: #eff3f9;
+  background: #eff3f8;
 }
 .unified-layout .unified-brand { margin-bottom: 43px; padding-inline: 8px; }
 .unified-layout .unified-brand b { font-size: 21px !important; }
@@ -200,7 +200,9 @@
 .unified-layout .figma-overview-panel { padding: 21px; }
 .unified-layout .figma-overview-panel .v4-metrics > button {
   min-height: 103px;
-  background: #edf2fa;
+  background: #eef3fb;
+  border-color: #dbe5f4;
+  border-radius: 12px;
   padding-inline: 16px !important;
 }
 .unified-layout .figma-overview-panel .v4-chart-grid { gap: 16px; }
