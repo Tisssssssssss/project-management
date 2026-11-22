@@ -6,7 +6,11 @@ const surfaces = [
   '.unified-sidebar', '.window-ledger > .panel', '.window-ledger .ledger-search',
   '.figma-overview-panel', '.figma-overview-panel .v4-metrics > button',
   '.figma-overview-panel .v4-chart-panel', '.figma-today .daily-list',
-  '.figma-record-panel', '.settings-v3', '.window-detail .panel', '.dialog'
+  '.figma-record-panel', '.settings-v3', '.window-detail .panel', '.dialog',
+  '.ledger-stage-filter[open] > .ledger-stage-options',
+  '.ledger-date-filter[open] > .ledger-date-menu',
+  '.excel-export-menu:not([hidden])', '.figma-secondary[open] > .figma-secondary-body',
+  '.figma-project-picker', '.project-summary'
 ].join(', ');
 const roots = new Map();
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -17,7 +21,7 @@ function refresh() {
     if (targets.has(host) && layer.parentNode === host) continue;
     root.unmount();
     layer.remove();
-    host.classList.remove('workspace-glass-surface');
+    host.classList.remove('workspace-glass-surface', 'workspace-glass-static');
     roots.delete(host);
   }
   for (const host of targets) {
@@ -26,8 +30,9 @@ function refresh() {
     layer.className = 'workspace-glass-layer';
     layer.setAttribute('aria-hidden', 'true');
     layer.inert = true;
+    if (getComputedStyle(host).position === 'static') host.classList.add('workspace-glass-static');
     host.classList.add('workspace-glass-surface');
-    host.prepend(layer);
+    host.append(layer);
     const root = createRoot(layer);
     roots.set(host, { root, layer });
     root.render(
@@ -49,5 +54,5 @@ new MutationObserver(() => {
     frame = 0;
     refresh();
   });
-}).observe(document.body, { childList: true, subtree: true });
+}).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['open', 'hidden'] });
 refresh();

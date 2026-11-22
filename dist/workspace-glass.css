@@ -10,7 +10,7 @@
   isolation: isolate;
   background-color: #f8fbffad;
 }
-.workspace-glass-surface:not(.unified-sidebar):not(.dialog) { position: relative; }
+.workspace-glass-static { position: relative; }
 .workspace-glass-layer {
   position: absolute;
   inset: 0;
@@ -27,4 +27,25 @@
   .workspace-glass-layer { display: none; }
   .unified-layout .unified-main { background: var(--workspace-canvas); }
   .unified-layout .workspace-glass-surface { background-color: #fff; }
+}
+
+/* Popovers and readouts keep a denser backing over table and chart content. */
+.unified-layout :is(.ledger-stage-options, .ledger-date-menu, .excel-export-menu, .figma-secondary-body, .figma-project-picker).workspace-glass-surface {
+  background: #f5faffdf;
+}
+.unified-layout .v4-tooltip {
+  background: #f5faffeb;
+  border: 1px solid #e4eef9;
+  box-shadow: 0 8px 20px #183d6b26, inset 0 1px #fff;
+  backdrop-filter: blur(12px) saturate(130%);
+}
+.unified-layout .window-ledger thead th {
+  background: #edf5fbea;
+  backdrop-filter: blur(8px);
+}
+.unified-layout .project-summary.workspace-glass-surface { background: #f5faffbd; }
+.dialog :is(.dialoghead, .formfoot) { background-color: #f5faffed; }
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .unified-layout :is(.ledger-stage-options, .ledger-date-menu, .excel-export-menu, .figma-secondary-body, .figma-project-picker, .project-summary, .v4-tooltip, .window-ledger thead th),
+  .dialog :is(.dialoghead, .formfoot) { background: Canvas; backdrop-filter: none; }
 }
