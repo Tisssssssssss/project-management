@@ -35,7 +35,9 @@
       button.setAttribute('aria-pressed', String(libraryScope === key));
       toolbar.append(button);
     }
-    panel.append(toolbar);
+    const records = document.createElement('div');
+    records.className = 'figma-library-list';
+    panel.append(toolbar, records);
     const projects = data.projects.filter(p =>
       libraryScope === 'all' || (!p.archived && (libraryScope === 'active' || p.starred))
     );
@@ -45,10 +47,10 @@
         row.className = 'figma-record-row';
         row.title = file.name;
         row.innerHTML = `<span><strong>${esc(file.name)}</strong><small>${esc(project.name)} · ${Math.ceil(file.size / 1024)} KB</small></span><span class="figma-row-meta"><span>${esc(project.stage || '')}</span>${chevron}</span>`;
-        panel.append(row);
+        records.append(row);
       }
     }
-    if (panel.children.length === 1) panel.insertAdjacentHTML('beforeend', '<p class="empty">此范围暂无资料</p>');
+    if (!records.children.length) records.insertAdjacentHTML('beforeend', '<p class="empty">此范围暂无资料</p>');
     const add = actionButton('添加资料', () => {
       if (!data.projects.length) return toast('请先登记项目');
       modal('选择资料所属项目', '<div class="figma-project-picker"></div>', () => {}, { readonly: true, drawer: true });

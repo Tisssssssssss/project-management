@@ -4,7 +4,7 @@ import LiquidGlass from 'liquid-glass-react';
 
 const surfaces = [
   '.unified-sidebar', '.window-ledger > .panel', '.window-ledger .ledger-search',
-  '.window-ledger .tablewrap',
+  '.window-ledger .tablewrap', '.figma-library-list',
   '.figma-overview-panel', '.figma-overview-panel .v4-metrics > button',
   '.figma-overview-panel .v4-chart-panel', '.figma-today .daily-list',
   '.figma-record-panel', '.settings-v3', '.window-detail .panel', '.dialog',
@@ -38,7 +38,7 @@ function refresh() {
     roots.set(host, { root, layer });
     root.render(
       <LiquidGlass cornerRadius={host.matches('.ledger-search') ? 8 : host.matches('.v4-tooltip, .ledger-stage-options, .ledger-date-menu, .excel-export-menu, .figma-secondary-body') ? 12 : 14}
-        padding="0" displacementScale={host.matches('.tablewrap') ? 28.6 : 52} blurAmount={0.16}
+        padding="0" displacementScale={host.matches('.tablewrap, .figma-library-list') ? 28.6 : 52} blurAmount={0.16}
         aberrationIntensity={0.8} saturation={130}
         elasticity={motion.matches ? 0 : 0.25} mouseContainer={{ current: host }}
         style={{ position: 'absolute', width: '100%', height: '100%' }}>

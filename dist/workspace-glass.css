@@ -56,23 +56,21 @@
 .ledger-date-menu .ledger-date-fields input[type="date"] { min-width: 0; }
 .unified-layout .v4-tooltip .workspace-glass-layer { pointer-events: none; }
 
-/* Plot marks and ledger text stay in front of the shared glass surfaces. */
+/* Table and library rows share one light surface per list. */
 @media (prefers-reduced-transparency: no-preference) and (forced-colors: none) {
-  .unified-layout .figma-overview-panel .v4-chart-panel.workspace-glass-surface {
-    background: #eef8ff54;
-    border-color: #f1faff;
-    box-shadow: inset 0 1px #fff, 0 12px 24px #3465a522;
-  }
   .unified-layout .window-ledger > .panel:has(.tablewrap) {
     background: #eff8ff88;
   }
-  .unified-layout .window-ledger .tablewrap.workspace-glass-surface {
+  .unified-layout .window-ledger .tablewrap.workspace-glass-surface,
+  .unified-layout .figma-library-list.workspace-glass-surface {
     background: #f5faff46;
   }
-  .unified-layout .window-ledger .tablewrap tbody tr.project td {
+  .unified-layout .window-ledger .tablewrap tbody tr.project td,
+  .unified-layout .figma-library-list .figma-record-row {
     background: transparent;
   }
-  .unified-layout .window-ledger .tablewrap tbody tr.project:is(:hover, :focus-within) td {
+  .unified-layout .window-ledger .tablewrap tbody tr.project:is(:hover, :focus-within) td,
+  .unified-layout .figma-library-list .figma-record-row:is(:hover, :focus-visible) {
     background: #f4fbffca;
   }
 }
