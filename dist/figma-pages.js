@@ -45,8 +45,7 @@
       for (const file of (project.files || []).filter(f => !f.deletedAt)) {
         const row = actionButton('', () => openFiles(project));
         row.className = 'figma-record-row';
-        row.title = file.name;
-        row.innerHTML = `<span><strong>${esc(file.name)}</strong><small>${esc(project.name)} · ${Math.ceil(file.size / 1024)} KB</small></span><span class="figma-row-meta"><span>${esc(project.stage || '')}</span>${chevron}</span>`;
+        row.innerHTML = `<span><strong>${esc(file.name)}</strong><small>${esc(project.name)} · ${Math.ceil(file.size / 1024)} KB</small></span><span class="figma-row-meta">${project.stage ? badge(project.stage) : '<span></span>'}${chevron}</span>`;
         records.append(row);
       }
     }

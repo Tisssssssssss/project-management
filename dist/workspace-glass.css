@@ -58,7 +58,8 @@
 
 /* Table and library rows share one light surface per list. */
 @media (prefers-reduced-transparency: no-preference) and (forced-colors: none) {
-  .unified-layout .window-ledger > .panel:has(.tablewrap) {
+  .unified-layout .window-ledger > .panel:has(.tablewrap),
+  .unified-layout .figma-library-panel.workspace-glass-surface {
     background: #eff8ff88;
   }
   .unified-layout .window-ledger .tablewrap.workspace-glass-surface,
