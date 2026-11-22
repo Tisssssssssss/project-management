@@ -1,0 +1,30 @@
+/* A translucent material over the existing workspace. Decorative layers never receive input. */
+.unified-layout .unified-main {
+  background:
+    radial-gradient(ellipse at 5% 4%, #f4eafa 0%, transparent 42%),
+    radial-gradient(ellipse at 93% 30%, #b6def4 0%, transparent 57%),
+    radial-gradient(ellipse at 22% 98%, #b6c9ec 0%, transparent 62%),
+    #e3eef8;
+}
+.unified-layout .workspace-glass-surface {
+  isolation: isolate;
+  background-color: #f8fbffad;
+}
+.workspace-glass-surface:not(.unified-sidebar):not(.dialog) { position: relative; }
+.workspace-glass-layer {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: clip;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.workspace-glass-layer > * { pointer-events: none !important; }
+.unified-layout .window-ledger .tablewrap,
+.unified-layout .figma-record-row { background-color: #ffffffad; }
+.unified-layout .window-ledger .boardcard { background-color: #ffffffe0; }
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .workspace-glass-layer { display: none; }
+  .unified-layout .unified-main { background: var(--workspace-canvas); }
+  .unified-layout .workspace-glass-surface { background-color: #fff; }
+}
