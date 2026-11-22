@@ -12,7 +12,7 @@ function addLedgerDateFilter(filters) {
   summary.textContent = start || end ? label + ' · ' + (start || '不限') + ' 至 ' + (end || '不限') : '时间筛选';
   const form = document.createElement('form');
   form.className = 'ledger-settings-menu ledger-date-menu';
-  form.innerHTML = '<h3>时间筛选</h3><fieldset class="ledger-date-basis"><legend>日期依据</legend><label><input type="radio" name="field" value="followup">最近跟进</label><label><input type="radio" name="field" value="created">登记日期</label></fieldset><label>开始日期<input name="start" type="date"></label><label>结束日期<input name="end" type="date"></label><div class="ledger-date-actions"><button type="button">清除时间</button><button class="primary" type="submit">应用</button></div>';
+  form.innerHTML = '<h3>时间筛选</h3><fieldset class="ledger-date-basis"><legend>日期依据</legend><label><input type="radio" name="field" value="followup">最近跟进</label><label><input type="radio" name="field" value="created">登记日期</label></fieldset><div class="ledger-date-fields"><label>开始日期<input name="start" type="date"></label><label>结束日期<input name="end" type="date"></label></div><div class="ledger-date-actions"><button type="button">清除时间</button><button class="primary" type="submit">应用</button></div>';
   for (const input of form.querySelectorAll('input[type="date"]')) {
     input.insertAdjacentHTML('afterend', workspaceIcon('calendar'));
   }

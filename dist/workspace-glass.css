@@ -1,9 +1,9 @@
 /* A translucent material over the existing workspace. Decorative layers never receive input. */
 .unified-layout .unified-main {
   background:
-    radial-gradient(ellipse at 5% 4%, #f4eafa 0%, transparent 42%),
-    radial-gradient(ellipse at 93% 30%, #b6def4 0%, transparent 57%),
-    radial-gradient(ellipse at 22% 98%, #b6c9ec 0%, transparent 62%),
+    radial-gradient(ellipse at 5% 4%, #f8edfa 0%, transparent 39%),
+    radial-gradient(ellipse at 90% 32%, #a8d9f3 0%, transparent 51%),
+    radial-gradient(ellipse at 30% 93%, #abbee9 0%, transparent 54%),
     #e3eef8;
 }
 .unified-layout .workspace-glass-surface {
@@ -31,21 +31,27 @@
 
 /* Popovers and readouts keep a denser backing over table and chart content. */
 .unified-layout :is(.ledger-stage-options, .ledger-date-menu, .excel-export-menu, .figma-secondary-body, .figma-project-picker).workspace-glass-surface {
-  background: #f5faffdf;
+  background: #f5faffbc;
 }
 .unified-layout .v4-tooltip {
-  background: #f5faffeb;
+  background: #f5faffbc;
   border: 1px solid #e4eef9;
   box-shadow: 0 8px 20px #183d6b26, inset 0 1px #fff;
-  backdrop-filter: blur(12px) saturate(130%);
+  backdrop-filter: none;
 }
 .unified-layout .window-ledger thead th {
   background: #edf5fbea;
   backdrop-filter: blur(8px);
 }
-.unified-layout .project-summary.workspace-glass-surface { background: #f5faffbd; }
+.unified-layout .project-summary.workspace-glass-surface { background: #f8fbff9c; }
 .dialog :is(.dialoghead, .formfoot) { background-color: #f5faffed; }
 @media (prefers-reduced-transparency: reduce), (forced-colors: active) {
   .unified-layout :is(.ledger-stage-options, .ledger-date-menu, .excel-export-menu, .figma-secondary-body, .figma-project-picker, .project-summary, .v4-tooltip, .window-ledger thead th),
   .dialog :is(.dialoghead, .formfoot) { background: Canvas; backdrop-filter: none; }
 }
+
+.unified-layout .ledger-date-filter > .ledger-date-menu { width: min(300px, calc(100vw - 24px)); }
+.ledger-date-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.ledger-date-menu .ledger-date-fields > label { position: relative; min-width: 0; }
+.ledger-date-menu .ledger-date-fields input[type="date"] { min-width: 0; }
+.unified-layout .v4-tooltip .workspace-glass-layer { pointer-events: none; }

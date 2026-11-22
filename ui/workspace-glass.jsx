@@ -10,7 +10,7 @@ const surfaces = [
   '.ledger-stage-filter[open] > .ledger-stage-options',
   '.ledger-date-filter[open] > .ledger-date-menu',
   '.excel-export-menu:not([hidden])', '.figma-secondary[open] > .figma-secondary-body',
-  '.figma-project-picker', '.project-summary'
+  '.figma-project-picker', '.project-summary', '.v4-tooltip:not([hidden])'
 ].join(', ');
 const roots = new Map();
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
@@ -36,7 +36,7 @@ function refresh() {
     const root = createRoot(layer);
     roots.set(host, { root, layer });
     root.render(
-      <LiquidGlass cornerRadius={host.matches('.ledger-search') ? 8 : 14}
+      <LiquidGlass cornerRadius={host.matches('.ledger-search') ? 8 : host.matches('.v4-tooltip, .ledger-stage-options, .ledger-date-menu, .excel-export-menu, .figma-secondary-body') ? 12 : 14}
         padding="0" displacementScale={52} blurAmount={0.16}
         aberrationIntensity={0.8} saturation={130}
         elasticity={motion.matches ? 0 : 0.25} mouseContainer={{ current: host }}
