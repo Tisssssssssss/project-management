@@ -484,3 +484,18 @@
   inset: auto;
   margin: 0;
 }
+
+
+.unified-layout .figma-library-panel .figma-record-tabs { align-items: center; gap: 12px; }
+.unified-layout .figma-library-panel .figma-library-export {
+  margin-inline-start: auto;
+  padding: 6px 12px;
+  background: #f8fbff;
+  border: 1px solid var(--workspace-border);
+  border-radius: 8px;
+}
+.unified-layout .figma-library-panel .figma-record-row {
+  min-height: 88px;
+  padding-inline: 12px;
+}
+.unified-layout .figma-library-panel .figma-record-row strong { font-size: 15px; }

@@ -25,7 +25,7 @@
     const heading = content.querySelector('.heading');
     if (!scroll || !heading) return;
     const panel = document.createElement('section');
-    panel.className = 'panel figma-record-panel';
+    panel.className = 'panel figma-record-panel figma-library-panel';
     const toolbar = document.createElement('div');
     toolbar.className = 'figma-record-tabs';
     for (const [key, name] of libraryFilters) {
@@ -51,22 +51,15 @@
       }
     }
     if (!records.children.length) records.insertAdjacentHTML('beforeend', '<p class="empty">此范围暂无资料</p>');
-    const add = actionButton('添加资料', () => {
-      if (!data.projects.length) return toast('请先登记项目');
-      modal('选择资料所属项目', '<div class="figma-project-picker"></div>', () => {}, { readonly: true, drawer: true });
-      const picker = document.querySelector('.figma-project-picker');
-      for (const project of data.projects) {
-        picker.append(actionButton(project.name, () => {
-          document.querySelector('.dialog .close').click();
-          openFiles(project);
-        }));
-      }
-    }, true);
-    const actions = document.createElement('div');
-    actions.className = 'actions';
-    add.insertAdjacentHTML('afterbegin', workspaceIcon('plus'));
-    actions.append(add);
-    heading.append(actions);
+    heading.querySelector('h1')?.replaceChildren('资料库');
+    const headingActions = heading.querySelector('.actions');
+    const exportButton = headingActions?.querySelector('[data-action="export"]');
+    if (exportButton) {
+      exportButton.textContent = '导出工作区 JSON';
+      exportButton.classList.add('figma-library-export');
+      toolbar.append(exportButton);
+    }
+    headingActions?.remove();
     scroll.replaceChildren(panel);
   }
 
