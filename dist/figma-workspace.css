@@ -196,9 +196,23 @@
 }
 .unified-layout .figma-overview-panel .v4-chart-grid { gap: 16px; }
 .unified-layout .figma-today .daily-hero p { display: none; }
-.unified-layout .figma-today .daily-list { padding-inline: 21px; }
-.unified-layout .figma-today :is(.daily-list-head, .daily-task, .daily-list-filters) { padding-inline: 0; }
-.unified-layout .figma-today .daily-task { min-height: 106px; }
+.unified-layout .figma-today .daily-list { padding-inline: 0; }
+.unified-layout .figma-today :is(.daily-list-head, .daily-task) { padding-inline: 22px; }
+.unified-layout .figma-today .daily-task {
+  min-height: 88px;
+  padding-block: 12px;
+  border-color: #e6edf4;
+}
+.unified-layout .figma-today .daily-task h3 { font-size: 15px; color: #283548; }
+.unified-layout .figma-today .daily-task .daily-state-badge {
+  display: inline-block;
+  margin: 0 0 0 8px;
+  color: #405f92;
+  background: #eaf1fc;
+}
+.unified-layout .figma-today .daily-task .daily-state-done { background: #e4f2ec; color: #286451; }
+.unified-layout .figma-today .daily-task .daily-state-customer,
+.unified-layout .figma-today .daily-task .daily-state-internal { background: #fff2d9; color: #80551e; }
 .unified-layout .figma-today .daily-status { display: none; }
 .unified-layout .figma-today .daily-tabs button { color: #223145; font-weight: 600; }
 .unified-layout .figma-record-panel, .unified-layout .settings-v3 { padding-inline: 21px; }

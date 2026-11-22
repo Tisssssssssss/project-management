@@ -59,7 +59,8 @@
 /* Table and library rows share one light surface per list. */
 @media (prefers-reduced-transparency: no-preference) and (forced-colors: none) {
   .unified-layout .window-ledger > .panel:has(.tablewrap),
-  .unified-layout .figma-library-panel.workspace-glass-surface {
+  .unified-layout .figma-library-panel.workspace-glass-surface,
+  .unified-layout .figma-today .daily-list.workspace-glass-surface {
     background: #eff8ff88;
   }
   .unified-layout .window-ledger .tablewrap.workspace-glass-surface,
@@ -67,11 +68,13 @@
     background: #f5faff46;
   }
   .unified-layout .window-ledger .tablewrap tbody tr.project td,
-  .unified-layout .figma-library-list .figma-record-row {
+  .unified-layout .figma-library-list .figma-record-row,
+  .unified-layout .figma-today .daily-task {
     background: transparent;
   }
   .unified-layout .window-ledger .tablewrap tbody tr.project:is(:hover, :focus-within) td,
-  .unified-layout .figma-library-list .figma-record-row:is(:hover, :focus-visible) {
+  .unified-layout .figma-library-list .figma-record-row:is(:hover, :focus-visible),
+  .unified-layout .figma-today .daily-task:is(:hover, :focus-within) {
     background: #f4fbffca;
   }
 }
