@@ -4,9 +4,11 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const os = require('node:os');
-const { startService } = require('./service.cjs');
+const { execFileSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
+const packaged = process.env.YANTAI_PACKAGED_RESOURCES;
+const { startService } = require(packaged ? path.join(packaged, 'service.cjs') : './service.cjs');
 const output = process.env.YANTAI_LEDGER_SCREENSHOTS && path.resolve(process.env.YANTAI_LEDGER_SCREENSHOTS);
 const temp = require('node:fs').mkdtempSync(path.join(os.tmpdir(), 'yantai-ledger-ui-'));
 app.setPath('userData', path.join(temp, 'profile'));
@@ -14,7 +16,7 @@ app.on("window-all-closed", () => {}); // Exit after assertions and temporary da
 
 async function test() {
   await app.whenReady();
-  const service = await startService({ directory: path.join(temp, 'data'), assets: path.join(root, 'dist') });
+  const service = await startService({ directory: path.join(temp, 'data'), assets: packaged ? path.join(packaged, 'runtime/dist') : path.join(root, 'dist') });
   const window = new BrowserWindow({ width: 1024, height: 620, show: true,
     titleBarStyle: 'hiddenInset', webPreferences: { backgroundThrottling: false } });
   const run = script => window.webContents.executeJavaScript(script);
@@ -32,7 +34,7 @@ async function test() {
     state.data.projects.push(project, { ...project, id: 'archive-fixture', name: '示例归档项目', archived: true, archiveHistory: [{date: '2020-01-02', archived: true}] });
     service.replace(state.data, state.revision);
     await window.loadURL(service.launch);
-    await window.webContents.insertCSS(await fs.readFile(path.join(__dirname, 'desktop.css'), 'utf8'));
+    await window.webContents.insertCSS(await fs.readFile(path.join(packaged || __dirname, 'desktop.css'), 'utf8'));
     await run(`new Promise(resolve => {
       const timer = setInterval(() => {
         if (data.projects.some(project => project.id === 'ledger-fixture')) {
@@ -41,6 +43,40 @@ async function test() {
       }, 25);
       setTimeout(() => { clearInterval(timer); resolve(); }, 3000);
     })`);
+    for (const [destination, label] of [
+      ['工作台', '数据总览'], ['项目台账', '项目台账'], ['待办与风险', '今日工作'],
+      ['资料知识库', '资料库'], ['设置', '设置与备份']
+    ]) {
+      const heading = await run(`(() => {
+        document.querySelector('[data-dest="${destination}"]').click();
+        return document.querySelector('.unified-content h1')?.textContent.trim();
+      })()`);
+      assert.equal(heading, label);
+    }
+    async function downloadWorkbook(zoom) {
+      const workbook = path.join(temp, 'ledger-' + zoom + '.xlsx');
+      const session = window.webContents.session;
+      let onDownload;
+      let timeout;
+      const completed = new Promise((resolve, reject) => {
+        timeout = setTimeout(() => reject(Error('Excel 下载超时')), 5000);
+        onDownload = (_event, item) => {
+          item.setSavePath(workbook);
+          item.once('done', (_event, status) => status === 'completed' ? resolve() : reject(Error(status)));
+        };
+        session.once('will-download', onDownload);
+      });
+      try {
+        await Promise.all([completed, run(`document.querySelector('[data-excel-current]').click()`)]);
+        const sheet = execFileSync('/usr/bin/unzip', ['-p', workbook, 'xl/worksheets/sheet1.xml'], { encoding: 'utf8' });
+        assert.match(sheet, /示例云资源整合/);
+        assert.doesNotMatch(sheet, /示例归档项目/);
+        assert.equal((sheet.match(/<row\b/g) || []).length, 2);
+      } finally {
+        clearTimeout(timeout);
+        session.removeListener('will-download', onDownload);
+      }
+    }
     for (const zoom of [1, 1.2]) {
       window.webContents.setZoomFactor(zoom);
       await run(`document.querySelector('[data-dest="项目台账"]').click()`);
@@ -77,7 +113,12 @@ async function test() {
         const filtered = document.querySelectorAll('tr.project').length;
         document.querySelector('.excel-export-more').click();
         const exportCount = document.querySelector('[data-excel-current] small')?.textContent.trim();
-        document.querySelector('.excel-export-more').click();
+        return { filtered, exportCount };
+      })()`);
+      assert.deepEqual(result, { filtered: 1, exportCount: '1 个项目' });
+      await downloadWorkbook(zoom);
+
+      const navigation = await run(`(() => {
         document.querySelector('[data-view="board"]').click();
         const board = document.querySelectorAll('.boardcard').length;
         document.querySelector('.boardcard').click();
@@ -88,11 +129,11 @@ async function test() {
         const returned = !!document.querySelector('.window-ledger');
         document.querySelector('.ledger-filter-result button').click();
         document.querySelector('[data-view="table"]').click();
-        return { filtered, exportCount, board, detail, sameProject, returned };
+        return { board, detail, sameProject, returned };
       })()`);
-      assert.deepEqual(result, { filtered: 1, exportCount: '1 个项目', board: 1, detail: true, sameProject: true, returned: true });
+      assert.deepEqual(navigation, { board: 1, detail: true, sameProject: true, returned: true });
     }
-    console.log('PASS: ledger scopes, stage + date filters, popover hit testing, board and project detail at 100% and 120%');
+    console.log('PASS: five pages, ledger scopes, combined filtering, Excel download, board and detail at 100% and 120%');
   } finally {
     window.destroy();
     await service.close();
