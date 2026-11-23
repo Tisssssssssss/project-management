@@ -5,6 +5,24 @@ function validate(d){if(!d||d.schemaVersion!==3||!Array.isArray(d.projects)||!Ar
 async function startService({directory,assets}){
  fs.mkdirSync(directory,{recursive:true,mode:0o700});const dbPath=path.join(directory,'workspace.sqlite3'),db=new DatabaseSync(dbPath);db.exec('PRAGMA journal_mode=WAL; PRAGMA busy_timeout=5000; CREATE TABLE IF NOT EXISTS snapshots (revision INTEGER PRIMARY KEY, created TEXT DEFAULT CURRENT_TIMESTAMP, payload TEXT NOT NULL)');
  const read=()=>{const row=db.prepare('SELECT revision,payload FROM snapshots ORDER BY revision DESC LIMIT 1').get();return {revision:row?.revision||0,data:row?JSON.parse(row.payload):{schemaVersion:3,modelVersion:3,projects:[],ledger:[],tasks:[],finance:[],audit:[]}}};
+ function replace(data, revision) {
+  validate(data);
+  db.exec('BEGIN IMMEDIATE');
+  try {
+   const current = read();
+   if (revision !== current.revision) {
+    const error = Error('工作空间已更新，请重新确认后再操作');
+    error.code = 'REVISION_CONFLICT';
+    throw error;
+   }
+   db.prepare('INSERT INTO snapshots(revision,payload) VALUES (?,?)').run(revision + 1, JSON.stringify(data));
+   db.exec('COMMIT');
+   return revision + 1;
+  } catch (error) {
+   if (db.isTransaction) db.exec('ROLLBACK');
+   throw error;
+  }
+ }
  const token=crypto.randomBytes(32).toString('hex');let origin;
  const server=http.createServer(async(req,res)=>{
   const json=(status,obj)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(obj))};
@@ -19,7 +37,8 @@ async function startService({directory,assets}){
    if(req.method==='POST'&&['/api/workspace','/api/export-xlsx'].includes(u.pathname)){
     const chunks=[];let length=0;for await(const b of req){length+=b.length;if(length>12*1024*1024)return json(413,{error:'数据超过12MB'});chunks.push(b)}let input;try{input=JSON.parse(Buffer.concat(chunks).toString('utf8'))}catch{return json(400,{error:'JSON格式无效'})}
     if(u.pathname==='/api/export-xlsx'){const bytes=xlsx(input.rows);res.writeHead(200,{'Content-Type':'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','Content-Disposition':"attachment; filename*=UTF-8''"+encodeURIComponent('项目台账.xlsx'),'Cache-Control':'no-store'});return res.end(bytes)}
-    validate(input.data);db.exec('BEGIN IMMEDIATE');try{const current=read();if(input.revision!==current.revision){db.exec('ROLLBACK');return json(409,{error:'另一窗口已更新，请刷新后再保存'})}db.prepare('INSERT INTO snapshots(revision,payload) VALUES (?,?)').run(current.revision+1,JSON.stringify(input.data));db.exec('COMMIT');return json(200,{revision:current.revision+1})}catch(e){if(db.isTransaction)db.exec('ROLLBACK');throw e}
+    try { return json(200,{revision:replace(input.data,input.revision)}); }
+    catch(error) { if(error.code==='REVISION_CONFLICT')return json(409,{error:error.message});throw error; }
    }
    if(req.method!=='GET')return json(404,{error:'接口不存在'});
    const relative=decodeURIComponent(u.pathname).replace(/^\/+/,''),file=path.resolve(assets,relative||'workspace.html');if(!file.startsWith(path.resolve(assets)+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile())return json(404,{error:'文件不存在'});
@@ -27,6 +46,6 @@ async function startService({directory,assets}){
   }catch(e){json(400,{error:e.message||'操作失败'})}
  });
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve)});origin=`http://127.0.0.1:${server.address().port}`;
- return {origin,launch:origin+'/launch?key='+token,read,dbPath,async backup(file){await backup(db,file)},async close(){await new Promise(r=>server.close(r));db.close()}};
+ return {origin,launch:origin+'/launch?key='+token,read,replace,dbPath,async backup(file){await backup(db,file)},async close(){await new Promise(r=>server.close(r));db.close()}};
 }
 module.exports={startService,validate};
