@@ -95,7 +95,15 @@ async function test() {
       await capture('ledger-list-' + zoom);
       const date = await run(`(async () => {
         document.querySelector('.ledger-stage-filter summary').click();
-        [...document.querySelectorAll('.ledger-stage-options button')].find(button => button.textContent === '需求调研').click();
+        await new Promise(resolve => setTimeout(resolve, 150));
+        const stage = document.querySelector('.ledger-stage-options');
+        const option = [...stage.querySelectorAll('button')].find(button => button.textContent === '需求调研');
+        const point = option.getBoundingClientRect();
+        if (!stage.matches(':popover-open') ||
+            document.elementFromPoint(point.x + 8, point.y + 8) !== option) {
+          throw Error('阶段选项被遮挡');
+        }
+        option.click();
         document.querySelector('.ledger-date-filter summary').click();
         await new Promise(resolve => setTimeout(resolve, 150));
         const form = document.querySelector('.ledger-date-menu');

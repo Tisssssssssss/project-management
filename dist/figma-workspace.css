@@ -493,7 +493,7 @@
   .ledger-date-menu input[type="date"] + .workspace-icon { bottom: 8px; }
 }
 .unified-layout .figma-today .daily-task > :first-child { min-width: 0; }
-.unified-layout .ledger-date-filter > .ledger-date-menu[popover] {
+.unified-layout .ledger-filter > :is(.ledger-date-menu, .ledger-stage-options)[popover] {
   position: fixed;
   inset: auto;
   margin: 0;

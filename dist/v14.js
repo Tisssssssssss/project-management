@@ -95,18 +95,7 @@ function addLedgerDateFilter(filters) {
     ledgerDates = { field, start: '', end: '' };
     render();
   };
-  form.setAttribute('popover', 'manual');
-  details.addEventListener('toggle', () => {
-    if (!details.open) {
-      if (form.matches(':popover-open')) form.hidePopover();
-      return;
-    }
-    form.showPopover();
-    const trigger = summary.getBoundingClientRect();
-    form.style.left = Math.max(8, trigger.right - form.offsetWidth) + 'px';
-    form.style.top = Math.max(8, Math.min(trigger.bottom + 8, innerHeight - form.offsetHeight - 8)) + 'px';
-  });
-  details.append(summary, form);
+  mountLedgerPopover(details, summary, form);
   filters.append(details);
 }
 
@@ -138,8 +127,23 @@ function addLedgerStageFilter(filters) {
   }
 
   select.hidden = true;
-  details.append(summary, options);
+  mountLedgerPopover(details, summary, options);
   select.after(details);
+}
+
+function mountLedgerPopover(details, summary, popup) {
+  popup.setAttribute('popover', 'manual');
+  details.append(summary, popup);
+  details.addEventListener('toggle', () => {
+    if (!details.open) {
+      if (popup.matches(':popover-open')) popup.hidePopover();
+      return;
+    }
+    popup.showPopover();
+    const trigger = summary.getBoundingClientRect();
+    popup.style.left = Math.max(8, trigger.right - popup.offsetWidth) + 'px';
+    popup.style.top = Math.max(8, Math.min(trigger.bottom + 8, innerHeight - popup.offsetHeight - 8)) + 'px';
+  });
 }
 
 document.addEventListener('click', event => {
@@ -157,6 +161,5 @@ document.addEventListener('keydown', event => {
 });
 
 window.addEventListener('resize', () => {
-  const date = document.querySelector('.ledger-date-filter[open]');
-  if (date) date.open = false;
+  for (const panel of document.querySelectorAll('.ledger-filter[open]')) panel.open = false;
 });
