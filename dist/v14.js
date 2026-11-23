@@ -2,44 +2,37 @@
 function setupLedgerControls(content) {
   const panel = content.querySelector('.panel');
   const head = panel?.querySelector('.panelhead');
-  const archive = panel?.querySelector('.list-toolbar');
-  const focus = panel?.querySelector('.project-focus');
   const filters = panel?.querySelector('.filters');
   const search = filters?.querySelector('#search');
-  const active = archive?.querySelector('[data-archive-filter="active"]');
-  const archivedButton = archive?.querySelector('[data-archive-filter="archived"]');
-  if (!head || !focus || !search || !active || !archivedButton) return;
+  if (!head || !search) return;
 
-  const archived = archivedButton.classList.contains('on');
+  const archived = showArchived;
   const top = document.createElement('div');
   top.className = 'ledger-toolbar';
   const scopes = document.createElement('div');
   scopes.className = 'ledger-scopes';
   scopes.setAttribute('aria-label', '项目范围');
 
-  const addScope = (key, label, pressed, archiveTarget, focusKey) => {
+  const addScope = (key, label, pressed, focusKey) => {
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.ledgerScope = key;
     button.textContent = label;
     button.classList.toggle('active', pressed);
     button.setAttribute('aria-pressed', String(pressed));
-    button.onclick = () => {
-      projectFocus = focusKey;
-      archiveTarget.click();
-    };
+    button.onclick = () => setLedgerScope(key === 'archived', focusKey);
     scopes.append(button);
   };
   const current = data.projects.filter(project => !project.archived);
   const archiveCount = data.projects.length - current.length;
-  addScope('active', '在跟 ' + current.length, !archived && projectFocus === 'all', active, 'all');
+  addScope('active', '在跟 ' + current.length, !archived && projectFocus === 'all', 'all');
   addScope('starred', '已关注 ' + current.filter(project => project.starred).length,
-    !archived && projectFocus === 'starred', active, 'starred');
-  addScope('archived', '归档 ' + archiveCount, archived, archivedButton, 'all');
-  const stale = focus.querySelector('[data-focus-project="stale"]');
-  if (stale) {
-    addScope('stale', stale.textContent.replace(/\s*(\d+)$/, ' $1'),
-      !archived && projectFocus === 'stale', active, 'stale');
+    !archived && projectFocus === 'starred', 'starred');
+  addScope('archived', '归档 ' + archiveCount, archived, 'all');
+  const staleCount = current.filter(isLedgerProjectStale).length;
+  if (staleCount || projectFocus === 'stale') {
+    addScope('stale', '长期未跟进 ' + staleCount,
+      !archived && projectFocus === 'stale', 'stale');
   }
 
   const display = document.createElement('div');
@@ -48,8 +41,6 @@ function setupLedgerControls(content) {
   if (viewSwitch) display.append(viewSwitch);
   top.append(scopes, display);
   head.replaceWith(top);
-  archive.remove();
-  focus.remove();
 
   filters.classList.add('ledger-search');
   search.placeholder = '搜索项目、单位、背景或进展';

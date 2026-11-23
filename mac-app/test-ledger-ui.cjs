@@ -80,6 +80,8 @@ async function test() {
     for (const zoom of [1, 1.2]) {
       window.webContents.setZoomFactor(zoom);
       await run(`document.querySelector('[data-dest="项目台账"]').click()`);
+      assert.equal(await run(`document.querySelectorAll('.ledger-toolbar').length`), 1);
+      assert.equal(await run(`document.querySelectorAll('.list-toolbar, .project-focus').length`), 0);
       for (const [scope, expected] of [['active', 'ledger-fixture'], ['starred', 'ledger-fixture'], ['archived', 'archive-fixture'], ['stale', null], ['active', 'ledger-fixture']]) {
         const result = await run(`(() => {
           document.querySelector('[data-ledger-scope="${scope}"]').click();

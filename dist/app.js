@@ -18,6 +18,12 @@ const seed={schemaVersion:3,modelVersion:3,projects:[],tasks:[],ledger:[],financ
 let data;try{data=JSON.parse(localStorage.getItem(KEY))||structuredClone(seed)}catch{data=structuredClone(seed)}
 let page='工作台',selected=null,tab='概览',query='',filter='',view='table';
 let projectScope=null;let projectFocus='all';
+let showArchived = false;
+function setLedgerScope(archived, focus) {
+  showArchived = archived;
+  projectFocus = focus;
+  render();
+}
 let ledgerDates = { field: 'followup', start: '', end: '' };
 function matchesLedgerDates(project, dates = ledgerDates) {
   const { field, start, end } = dates;
@@ -25,7 +31,14 @@ function matchesLedgerDates(project, dates = ledgerDates) {
   const date = field === 'created' ? created(project) : latest(project)?.date;
   return Boolean(date && (!start || date >= start) && (!end || date <= end));
 }
-function projectFocusMatch(p){return projectFocus==='starred'?!!p.starred:projectFocus==='stale'?(new Date(today()+'T12:00:00')-new Date((latest(p)?.date||created(p))+'T12:00:00'))/86400000>=14:true}
+function isLedgerProjectStale(project) {
+  const date = latest(project)?.date || created(project);
+  return (new Date(today() + 'T12:00:00') - new Date(date + 'T12:00:00')) / 86400000 >= 14;
+}
+function projectFocusMatch(project) {
+  return projectFocus === 'starred' ? !!project.starred :
+    projectFocus === 'stale' ? isLedgerProjectStale(project) : true;
+}
 const $=s=>document.querySelector(s);const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const id=()=>crypto.randomUUID();const today=()=>{let d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
 function save(){localStorage.setItem(KEY,JSON.stringify(data))}function toast(s){$('#toast').textContent=s;$('#toast').style.display='block';clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('#toast').style.display='none',2600)}
 function badge(s){return `<span class="badge ${['运维服务','已签约'].includes(s)?'green':['报价商务','招投标'].includes(s)?'orange':''}">${esc(s)}</span>`}function getp(pid){return data.projects.find(p=>p.id===pid)}function latest(p){return recentRecords(p.events)[0]}function nav(s){projectScope=null;page=s;selected=null;query='';filter='';render()}function openp(pid){selected=pid;tab='概览';render()}
