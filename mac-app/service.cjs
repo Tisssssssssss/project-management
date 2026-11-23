@@ -23,6 +23,46 @@ async function startService({directory,assets}){
    throw error;
   }
  }
+ // Save the latest 50 revisions, plus the newest revision from each of 12 older months.
+ // Historical project records remain inside each kept snapshot.
+ function snapshotRetention() {
+  const rows = db.prepare('SELECT revision, created FROM snapshots ORDER BY revision DESC').all();
+  const months = new Set();
+  const discard = [];
+  for (const { revision, created } of rows.slice(50)) {
+   const month = created?.slice(0, 7);
+   if (!months.has(month) && months.size < 12) {
+    months.add(month);
+   } else {
+    discard.push(revision);
+   }
+  }
+  return { latest: rows[0]?.revision || 0, keep: rows.length - discard.length, discard };
+ }
+ function pruneSnapshots(expected) {
+  db.exec('BEGIN IMMEDIATE');
+  try {
+   const current = snapshotRetention();
+   if (current.latest !== expected.latest || current.keep !== expected.keep ||
+       current.discard.length !== expected.discard.length ||
+       current.discard.some((revision, index) => revision !== expected.discard[index])) {
+    throw Error('保存版本已有变化，请重新预览');
+   }
+   if (current.discard.length) {
+    validate(read().data); // Verify the latest payload can still be read before deleting earlier snapshots.
+    const remove = db.prepare('DELETE FROM snapshots WHERE revision = ?');
+    for (const revision of current.discard) remove.run(revision);
+   }
+   db.exec('COMMIT');
+   return current.discard.length;
+  } catch (error) {
+   if (db.isTransaction) db.exec('ROLLBACK');
+   throw error;
+  }
+ }
+ function compactSnapshots() {
+  db.exec('PRAGMA wal_checkpoint(TRUNCATE); VACUUM; PRAGMA wal_checkpoint(TRUNCATE)');
+ }
  const token=crypto.randomBytes(32).toString('hex');let origin;
  const server=http.createServer(async(req,res)=>{
   const json=(status,obj)=>{res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(obj))};
@@ -46,6 +86,6 @@ async function startService({directory,assets}){
   }catch(e){json(400,{error:e.message||'操作失败'})}
  });
  await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve)});origin=`http://127.0.0.1:${server.address().port}`;
- return {origin,launch:origin+'/launch?key='+token,read,replace,dbPath,async backup(file){await backup(db,file)},async close(){await new Promise(r=>server.close(r));db.close()}};
+ return {origin,launch:origin+'/launch?key='+token,read,replace,snapshotRetention,pruneSnapshots,compactSnapshots,dbPath,async backup(file){await backup(db,file)},async close(){await new Promise(r=>server.close(r));db.close()}};
 }
 module.exports={startService,validate};

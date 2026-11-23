@@ -15,7 +15,7 @@ async function start(){
  const backups=path.join(folder,'backups');fs.mkdirSync(backups,{recursive:true,mode:0o700});await service.backup(path.join(backups,'startup-'+new Date().toISOString().replace(/[:.]/g,'-')+'.sqlite3'));const files=fs.readdirSync(backups).filter(f=>f.startsWith('startup-')).sort();for(const f of files.slice(0,-14))fs.unlinkSync(path.join(backups,f));
  Menu.setApplicationMenu(Menu.buildFromTemplate([
  {label:app.name,submenu:[{role:'about'},{type:'separator'},{label:'打开数据与备份目录',click:()=>shell.openPath(folder)},{type:'separator'},{role:'hide'},{role:'hideOthers'},{role:'unhide'},{type:'separator'},{role:'quit'}]},
- {label:'文件',submenu:[{label:'新建项目',accelerator:'CmdOrCtrl+N',click:()=>click('[data-action="new"]')},{label:'保存当前表单',accelerator:'CmdOrCtrl+S',click:()=>js("document.querySelector('.dialog form')?.requestSubmit()")},{label:'备份数据库…',click:backup},{label:'完整工作区备份…',click:backupWorkspace},{label:'从完整工作区备份恢复…',click:restoreWorkspace},{role:'close'}]},
+ {label:'文件',submenu:[{label:'新建项目',accelerator:'CmdOrCtrl+N',click:()=>click('[data-action="new"]')},{label:'保存当前表单',accelerator:'CmdOrCtrl+S',click:()=>js("document.querySelector('.dialog form')?.requestSubmit()")},{label:'备份数据库…',click:backup},{label:'完整工作区备份…',click:backupWorkspace},{label:'从完整工作区备份恢复…',click:restoreWorkspace},{label:'检查旧保存版本…',click:reviewSnapshotRetention},{role:'close'}]},
  {label:'编辑',submenu:[{role:'undo'},{role:'redo'},{type:'separator'},{role:'cut'},{role:'copy'},{role:'paste'},{role:'selectAll'},{label:'搜索项目',accelerator:'CmdOrCtrl+F',click:()=>js("document.querySelector('[aria-label=\"项目台账\"]')?.click();document.querySelector('#search')?.focus()")}]},
  {label:'显示',submenu:[{role:'reload'},{label:'标准比例',accelerator:'CmdOrCtrl+0',click:()=>win?.webContents.setZoomFactor(1)},{label:'放大',accelerator:'CmdOrCtrl+Plus',click:()=>zoom(.05)},{label:'缩小',accelerator:'CmdOrCtrl+-',click:()=>zoom(-.05)},{role:'togglefullscreen'}]},
  {label:'窗口',submenu:[{role:'minimize'},{role:'zoom'},{role:'front'}]}
@@ -69,6 +69,43 @@ async function restoreWorkspace() {
   await win.loadURL(service.launch);
  } catch (error) {
   dialog.showErrorBox('工作区恢复失败', error.message);
+ }
+}
+
+let reviewingSnapshots = false;
+async function reviewSnapshotRetention() {
+ if (reviewingSnapshots) return;
+ reviewingSnapshots = true;
+ try {
+  const plan = service.snapshotRetention();
+  const action = await dialog.showMessageBox(win, {
+   type: 'question',
+   message: '工作区保存版本',
+   detail: `保留最近 50 个版本，以及更早的最多 12 个月份各一个版本。\n\n本次保留 ${plan.keep} 个版本，可清理 ${plan.discard.length} 个旧版本。项目进展、台账和待办仍保存在当前版本中。`,
+   buttons: plan.discard.length ? ['取消', '创建备份并清理'] : ['关闭'],
+   defaultId: 0, cancelId: 0
+  });
+  if (!plan.discard.length || action.response !== 1) return;
+
+  const recovery = await fs.promises.mkdtemp(path.join(folder, 'backups', 'before-prune-'));
+  const snapshot = await createBackup({ parent: recovery, service, files: fileLinks, includeOriginals: false });
+  const removed = service.pruneSnapshots(plan);
+  let compacted = true;
+  try {
+   await new Promise(resolve => setImmediate(resolve));
+   service.compactSnapshots();
+  } catch {
+   compacted = false;
+  }
+  await dialog.showMessageBox(win, {
+   message: `已清理 ${removed} 个旧保存版本`,
+   detail: `清理前备份：${snapshot.folder}` +
+    (compacted ? '' : '\n本次未完成磁盘压缩，SQLite 会继续复用已释放的空间。')
+  });
+ } catch (error) {
+  dialog.showErrorBox('保存版本维护未完成', error.message);
+ } finally {
+  reviewingSnapshots = false;
  }
 }
 
