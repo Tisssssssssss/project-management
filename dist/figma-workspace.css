@@ -518,3 +518,59 @@
   padding-inline: 22px 12px;
 }
 .unified-layout .figma-library-panel .figma-record-row strong { font-size: 15px; }
+
+.window-detail .detail-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  min-height: 36px;
+  margin-bottom: 10px;
+}
+.window-detail .detail-panel-header h2 { margin: 0; }
+.detail-panel-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.window-detail .detail-empty {
+  margin: 0;
+  padding: 14px 0;
+  border-top: 1px solid var(--workspace-border);
+  color: #65768b;
+}
+.window-detail .detail-finance .finance-summary { gap: 8px; margin-block: 0 8px; }
+.window-detail .detail-finance .finance-summary > div { padding: 6px 10px; }
+.window-detail .detail-competition .competitor-card {
+  border: 0;
+  border-top: 1px solid var(--workspace-border);
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+  margin: 0;
+  padding: 12px 0;
+}
+.window-detail .detail-file-hint { margin: 0 0 8px; }
+.window-detail .detail-file-row {
+  min-height: 64px;
+  padding: 8px 10px;
+  border-top: 1px solid var(--workspace-border);
+}
+.window-detail .detail-file-row:is(:hover, :focus-within) { background: #f4fbffca; }
+.window-detail .detail-file-row .tasktext { min-width: 0; overflow-wrap: anywhere; }
+.window-detail .detail-file-delete { flex: none; color: #65768b; }
+.window-detail .detail-file-help { margin-top: 10px; font-size: 12px; color: #65768b; }
+
+/* On short windows the shared header must scroll with the details. */
+@media (max-height: 570px) {
+  .unified-layout .unified-content.window-detail {
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+  .unified-layout .window-detail > .workspace-scroll {
+    flex: none;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
+  .unified-layout .window-detail > .bottomnote { display: none; }
+  .unified-layout .window-detail > .heading { flex-wrap: wrap; gap: 8px; }
+  .unified-layout .window-detail > .heading .actions { flex-wrap: wrap; }
+  .unified-layout .window-detail > .heading .actions button { white-space: nowrap; }
+}
