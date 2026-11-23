@@ -48,12 +48,29 @@ function refresh() {
   }
 }
 
+const attachedSurface = '.workspace-glass-surface';
+function containsSurface(node) {
+  if (!(node instanceof Element) || node.matches('.workspace-glass-layer')) return false;
+  return node.matches(surfaces) || node.matches(attachedSurface) ||
+    Boolean(node.querySelector(surfaces + ', ' + attachedSurface));
+}
+
+function affectsSurface(record) {
+  if (!(record.target instanceof Element) || record.target.closest('.workspace-glass-layer')) return false;
+  if (record.type === 'attributes') return containsSurface(record.target);
+  return [...record.addedNodes, ...record.removedNodes].some(containsSurface);
+}
+
 let frame = 0;
-new MutationObserver(() => {
-  if (frame) return;
+const observeSurfaces = new MutationObserver(records => {
+  if (frame || !records.some(affectsSurface)) return;
   frame = requestAnimationFrame(() => {
     frame = 0;
     refresh();
   });
-}).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['open', 'hidden'] });
+});
+for (const region of document.querySelectorAll('#app, #modal')) {
+  observeSurfaces.observe(region, { childList: true, subtree: true,
+    attributes: true, attributeFilter: ['open', 'hidden'] });
+}
 refresh();
